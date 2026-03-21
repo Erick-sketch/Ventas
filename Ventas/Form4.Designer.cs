@@ -43,11 +43,15 @@
             listBox4 = new ListBox();
             btnAgregar = new Button();
             btnEliminar = new Button();
+            label5 = new Label();
+            textBox5 = new TextBox();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(textBox5);
+            groupBox1.Controls.Add(label5);
             groupBox1.Controls.Add(btnEliminar);
             groupBox1.Controls.Add(btnAgregar);
             groupBox1.Controls.Add(listBox4);
@@ -64,7 +68,7 @@
             groupBox1.Controls.Add(label1);
             groupBox1.Location = new Point(48, 51);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(910, 369);
+            groupBox1.Size = new Size(829, 369);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Detalle de Venta";
@@ -185,11 +189,27 @@
             btnEliminar.Text = "Eliminar de la Venta ";
             btnEliminar.UseVisualStyleBackColor = true;
             // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(526, 317);
+            label5.Name = "label5";
+            label5.Size = new Size(42, 15);
+            label5.TabIndex = 14;
+            label5.Text = "Total $";
+            // 
+            // textBox5
+            // 
+            textBox5.Location = new Point(574, 317);
+            textBox5.Name = "textBox5";
+            textBox5.Size = new Size(168, 23);
+            textBox5.TabIndex = 15;
+            // 
             // Form4
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1032, 450);
+            ClientSize = new Size(919, 450);
             Controls.Add(groupBox1);
             Name = "Form4";
             Text = "Form4";
@@ -215,5 +235,7 @@
         private ListBox listBox1;
         private Button btnEliminar;
         private Button btnAgregar;
+        private TextBox textBox5;
+        private Label label5;
     }
 }
