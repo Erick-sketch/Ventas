@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 namespace Ventas
 {
-    public partial class Form4 : Form
+    public partial class FormVentas : Form
     {
-        public Form4()
+        public FormVentas()
         {
             InitializeComponent();
         }

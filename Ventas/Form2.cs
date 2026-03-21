@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 namespace Ventas
 {
-    public partial class Form2 : Form
+    public partial class Administrativo : Form
     {
-        public Form2()
+        public Administrativo()
         {
             InitializeComponent();
         }

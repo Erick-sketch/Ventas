@@ -1,8 +1,8 @@
 namespace Ventas
 {
-    public partial class Form1 : Form
+    public partial class Personal : Form
     {
-        public Form1()
+        public Personal()
         {
             InitializeComponent();
         }

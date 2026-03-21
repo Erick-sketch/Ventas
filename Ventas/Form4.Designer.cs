@@ -1,6 +1,6 @@
 ﻿namespace Ventas
 {
-    partial class Form4
+    partial class FormVentas
     {
         /// <summary>
         /// Required designer variable.
@@ -205,14 +205,14 @@
             textBox5.Size = new Size(168, 23);
             textBox5.TabIndex = 15;
             // 
-            // Form4
+            // FormVentas
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(919, 450);
             Controls.Add(groupBox1);
-            Name = "Form4";
-            Text = "Form4";
+            Name = "FormVentas";
+            Text = "Frm Ventas";
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             ResumeLayout(false);

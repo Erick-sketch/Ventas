@@ -1,6 +1,6 @@
 ﻿namespace Ventas
 {
-    partial class Form3
+    partial class CatalogoArt
     {
         /// <summary>
         /// Required designer variable.
@@ -186,14 +186,14 @@
             button4.Text = "button4";
             button4.UseVisualStyleBackColor = true;
             // 
-            // Form3
+            // CatalogoArt
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(groupBox1);
-            Name = "Form3";
-            Text = "Form3";
+            Name = "CatalogoArt";
+            Text = "Catalogo Aticulos";
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             ResumeLayout(false);

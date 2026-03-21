@@ -1,6 +1,6 @@
 ﻿namespace Ventas
 {
-    partial class Form2
+    partial class Administrativo
     {
         /// <summary>
         /// Required designer variable.
@@ -60,7 +60,7 @@
             button3.Text = "Ventas";
             button3.UseVisualStyleBackColor = true;
             // 
-            // Form2
+            // Administrativo
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -68,8 +68,8 @@
             Controls.Add(button3);
             Controls.Add(button2);
             Controls.Add(button1);
-            Name = "Form2";
-            Text = "Form2";
+            Name = "Administrativo";
+            Text = "Administrativo";
             ResumeLayout(false);
         }
 

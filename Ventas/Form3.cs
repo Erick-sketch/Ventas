@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 namespace Ventas
 {
-    public partial class Form3 : Form
+    public partial class CatalogoArt : Form
     {
-        public Form3()
+        public CatalogoArt()
         {
             InitializeComponent();
         }

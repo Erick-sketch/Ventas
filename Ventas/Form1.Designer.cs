@@ -1,6 +1,6 @@
 ﻿namespace Ventas
 {
-    partial class Form1
+    partial class Personal
     {
         /// <summary>
         ///  Required designer variable.
@@ -192,13 +192,13 @@
             label1.Text = "Clave ";
             label1.Click += label1_Click;
             // 
-            // Form1
+            // Personal
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(groupBox1);
-            Name = "Form1";
+            Name = "Personal";
             Text = "Personal";
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
