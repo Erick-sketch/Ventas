@@ -28,46 +28,46 @@
         /// </summary>
         private void InitializeComponent()
         {
-            button1 = new Button();
-            button2 = new Button();
-            button3 = new Button();
+            this.btnPersona = new Button();
+            this.btnArt = new Button();
+            btnVentas = new Button();
             SuspendLayout();
             // 
-            // button1
+            // btnPersona
             // 
-            button1.Location = new Point(27, 72);
-            button1.Name = "button1";
-            button1.Size = new Size(250, 313);
-            button1.TabIndex = 0;
-            button1.Text = "Personal";
-            button1.UseVisualStyleBackColor = true;
+            this.btnPersona.Location = new Point(27, 72);
+            this.btnPersona.Name = "btnPersona";
+            this.btnPersona.Size = new Size(250, 313);
+            this.btnPersona.TabIndex = 0;
+            this.btnPersona.Text = "Personal";
+            this.btnPersona.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // btnArt
             // 
-            button2.Location = new Point(328, 72);
-            button2.Name = "button2";
-            button2.Size = new Size(250, 313);
-            button2.TabIndex = 1;
-            button2.Text = "Articulos";
-            button2.UseVisualStyleBackColor = true;
+            this.btnArt.Location = new Point(328, 72);
+            this.btnArt.Name = "btnArt";
+            this.btnArt.Size = new Size(250, 313);
+            this.btnArt.TabIndex = 1;
+            this.btnArt.Text = "Articulos";
+            this.btnArt.UseVisualStyleBackColor = true;
             // 
             // button3
             // 
-            button3.Location = new Point(623, 72);
-            button3.Name = "button3";
-            button3.Size = new Size(250, 313);
-            button3.TabIndex = 2;
-            button3.Text = "Ventas";
-            button3.UseVisualStyleBackColor = true;
+            btnVentas.Location = new Point(623, 72);
+            btnVentas.Name = "btnVentas";
+            btnVentas.Size = new Size(250, 313);
+            btnVentas.TabIndex = 2;
+            btnVentas.Text = "Ventas";
+            btnVentas.UseVisualStyleBackColor = true;
             // 
             // Administrativo
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(906, 450);
-            Controls.Add(button3);
-            Controls.Add(button2);
-            Controls.Add(button1);
+            Controls.Add(btnVentas);
+            Controls.Add(this.btnArt);
+            Controls.Add(this.btnPersona);
             Name = "Administrativo";
             Text = "Administrativo";
             ResumeLayout(false);
@@ -77,6 +77,6 @@
 
         private Button button1;
         private Button button2;
-        private Button button3;
+        private Button btnVentas;
     }
 }
