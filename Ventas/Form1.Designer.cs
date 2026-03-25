@@ -64,7 +64,7 @@
             groupBox1.Controls.Add(label1);
             groupBox1.Location = new Point(22, 31);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(658, 383);
+            groupBox1.Size = new Size(671, 383);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Datos del personal";
@@ -80,6 +80,8 @@
             // 
             // button4
             // 
+            button4.Image = Properties.Resources.Arrow_XRight_icon;
+            button4.ImageAlign = ContentAlignment.MiddleLeft;
             button4.Location = new Point(508, 280);
             button4.Name = "button4";
             button4.Size = new Size(150, 70);
@@ -90,6 +92,8 @@
             // 
             // button3
             // 
+            button3.Image = Properties.Resources.Wrench_icon;
+            button3.ImageAlign = ContentAlignment.MiddleLeft;
             button3.Location = new Point(346, 280);
             button3.Name = "button3";
             button3.Size = new Size(150, 70);
@@ -100,6 +104,8 @@
             // 
             // button2
             // 
+            button2.Image = Properties.Resources.Wizard_icon;
+            button2.ImageAlign = ContentAlignment.MiddleLeft;
             button2.Location = new Point(177, 280);
             button2.Name = "button2";
             button2.Size = new Size(150, 70);
@@ -110,13 +116,17 @@
             // 
             // button1
             // 
+            button1.Image = Properties.Resources.Add_User_icon;
+            button1.ImageAlign = ContentAlignment.MiddleLeft;
             button1.Location = new Point(6, 280);
             button1.Name = "button1";
             button1.Size = new Size(150, 70);
             button1.TabIndex = 10;
             button1.Text = "Agregar";
             button1.TextAlign = ContentAlignment.MiddleRight;
+            button1.UseCompatibleTextRendering = true;
             button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // textBox4
             // 
@@ -190,7 +200,6 @@
             label1.Size = new Size(39, 15);
             label1.TabIndex = 0;
             label1.Text = "Clave ";
-            label1.Click += label1_Click;
             // 
             // Personal
             // 
