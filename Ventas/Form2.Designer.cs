@@ -30,7 +30,7 @@
         {
             this.btnPersona = new Button();
             this.btnArt = new Button();
-            btnVentas = new Button();
+            this.btnVentas = new Button();
             SuspendLayout();
             // 
             // btnPersona
@@ -51,21 +51,21 @@
             this.btnArt.Text = "Articulos";
             this.btnArt.UseVisualStyleBackColor = true;
             // 
-            // button3
+            // btnVentas
             // 
-            btnVentas.Location = new Point(623, 72);
-            btnVentas.Name = "btnVentas";
-            btnVentas.Size = new Size(250, 313);
-            btnVentas.TabIndex = 2;
-            btnVentas.Text = "Ventas";
-            btnVentas.UseVisualStyleBackColor = true;
+            this.btnVentas.Location = new Point(623, 72);
+            this.btnVentas.Name = "btnVentas";
+            this.btnVentas.Size = new Size(250, 313);
+            this.btnVentas.TabIndex = 2;
+            this.btnVentas.Text = "Ventas";
+            this.btnVentas.UseVisualStyleBackColor = true;
             // 
             // Administrativo
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(906, 450);
-            Controls.Add(btnVentas);
+            Controls.Add(this.btnVentas);
             Controls.Add(this.btnArt);
             Controls.Add(this.btnPersona);
             Name = "Administrativo";
@@ -75,8 +75,8 @@
 
         #endregion
 
-        private Button button1;
-        private Button button2;
+        private Button btnPersona;
+        private Button btnArt;
         private Button btnVentas;
     }
 }

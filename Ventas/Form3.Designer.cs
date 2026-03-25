@@ -29,20 +29,20 @@
         private void InitializeComponent()
         {
             groupBox1 = new GroupBox();
-            label1 = new Label();
-            label2 = new Label();
-            label3 = new Label();
-            label4 = new Label();
-            label5 = new Label();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
-            textBox3 = new TextBox();
-            textBox4 = new TextBox();
-            textBox5 = new TextBox();
-            button1 = new Button();
-            button2 = new Button();
-            button3 = new Button();
             button4 = new Button();
+            button3 = new Button();
+            button2 = new Button();
+            button1 = new Button();
+            textBox5 = new TextBox();
+            textBox4 = new TextBox();
+            textBox3 = new TextBox();
+            textBox2 = new TextBox();
+            textBox1 = new TextBox();
+            label5 = new Label();
+            label4 = new Label();
+            label3 = new Label();
+            label2 = new Label();
+            label1 = new Label();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
@@ -69,41 +69,77 @@
             groupBox1.TabStop = false;
             groupBox1.Text = "Articulo";
             // 
-            // label1
+            // button4
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(36, 32);
-            label1.Name = "label1";
-            label1.Size = new Size(36, 15);
-            label1.TabIndex = 0;
-            label1.Text = "Clave";
+            button4.Location = new Point(580, 267);
+            button4.Name = "button4";
+            button4.Size = new Size(150, 70);
+            button4.TabIndex = 13;
+            button4.Text = "button4";
+            button4.UseVisualStyleBackColor = true;
             // 
-            // label2
+            // button3
             // 
-            label2.AutoSize = true;
-            label2.Location = new Point(168, 32);
-            label2.Name = "label2";
-            label2.Size = new Size(69, 15);
-            label2.TabIndex = 1;
-            label2.Text = "Descripcion";
+            button3.Location = new Point(402, 265);
+            button3.Name = "button3";
+            button3.Size = new Size(150, 70);
+            button3.TabIndex = 12;
+            button3.Text = "button3";
+            button3.UseVisualStyleBackColor = true;
             // 
-            // label3
+            // button2
             // 
-            label3.AutoSize = true;
-            label3.Location = new Point(36, 147);
-            label3.Name = "label3";
-            label3.Size = new Size(62, 15);
-            label3.TabIndex = 2;
-            label3.Text = "Evidencias";
+            button2.Location = new Point(213, 263);
+            button2.Name = "button2";
+            button2.Size = new Size(150, 70);
+            button2.TabIndex = 11;
+            button2.Text = "button2";
+            button2.UseVisualStyleBackColor = true;
             // 
-            // label4
+            // button1
             // 
-            label4.AutoSize = true;
-            label4.Location = new Point(299, 147);
-            label4.Name = "label4";
-            label4.Size = new Size(38, 15);
-            label4.TabIndex = 3;
-            label4.Text = "Costo";
+            button1.Location = new Point(36, 265);
+            button1.Name = "button1";
+            button1.Size = new Size(150, 70);
+            button1.TabIndex = 10;
+            button1.Text = "button1";
+            button1.UseVisualStyleBackColor = true;
+            // 
+            // textBox5
+            // 
+            textBox5.Location = new Point(485, 178);
+            textBox5.Name = "textBox5";
+            textBox5.Size = new Size(100, 23);
+            textBox5.TabIndex = 9;
+            // 
+            // textBox4
+            // 
+            textBox4.Location = new Point(299, 178);
+            textBox4.Name = "textBox4";
+            textBox4.Size = new Size(100, 23);
+            textBox4.TabIndex = 8;
+            // 
+            // textBox3
+            // 
+            textBox3.Location = new Point(36, 183);
+            textBox3.Name = "textBox3";
+            textBox3.Size = new Size(187, 23);
+            textBox3.TabIndex = 7;
+            // 
+            // textBox2
+            // 
+            textBox2.Location = new Point(168, 60);
+            textBox2.Name = "textBox2";
+            textBox2.Size = new Size(570, 23);
+            textBox2.TabIndex = 6;
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(36, 60);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(100, 23);
+            textBox1.TabIndex = 5;
+            textBox1.TextChanged += textBox1_TextChanged;
             // 
             // label5
             // 
@@ -115,76 +151,41 @@
             label5.Text = "Precio";
             label5.Click += label5_Click;
             // 
-            // textBox1
+            // label4
             // 
-            textBox1.Location = new Point(36, 60);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(100, 23);
-            textBox1.TabIndex = 5;
+            label4.AutoSize = true;
+            label4.Location = new Point(299, 147);
+            label4.Name = "label4";
+            label4.Size = new Size(38, 15);
+            label4.TabIndex = 3;
+            label4.Text = "Costo";
             // 
-            // textBox2
+            // label3
             // 
-            textBox2.Location = new Point(168, 60);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(570, 23);
-            textBox2.TabIndex = 6;
+            label3.AutoSize = true;
+            label3.Location = new Point(36, 147);
+            label3.Name = "label3";
+            label3.Size = new Size(62, 15);
+            label3.TabIndex = 2;
+            label3.Text = "Evidencias";
             // 
-            // textBox3
+            // label2
             // 
-            textBox3.Location = new Point(36, 183);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(187, 23);
-            textBox3.TabIndex = 7;
+            label2.AutoSize = true;
+            label2.Location = new Point(168, 32);
+            label2.Name = "label2";
+            label2.Size = new Size(69, 15);
+            label2.TabIndex = 1;
+            label2.Text = "Descripcion";
             // 
-            // textBox4
+            // label1
             // 
-            textBox4.Location = new Point(299, 178);
-            textBox4.Name = "textBox4";
-            textBox4.Size = new Size(100, 23);
-            textBox4.TabIndex = 8;
-            // 
-            // textBox5
-            // 
-            textBox5.Location = new Point(485, 178);
-            textBox5.Name = "textBox5";
-            textBox5.Size = new Size(100, 23);
-            textBox5.TabIndex = 9;
-            // 
-            // button1
-            // 
-            button1.Location = new Point(36, 265);
-            button1.Name = "button1";
-            button1.Size = new Size(150, 70);
-            button1.TabIndex = 10;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            button2.Location = new Point(213, 263);
-            button2.Name = "button2";
-            button2.Size = new Size(150, 70);
-            button2.TabIndex = 11;
-            button2.Text = "button2";
-            button2.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            button3.Location = new Point(402, 265);
-            button3.Name = "button3";
-            button3.Size = new Size(150, 70);
-            button3.TabIndex = 12;
-            button3.Text = "button3";
-            button3.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            button4.Location = new Point(580, 267);
-            button4.Name = "button4";
-            button4.Size = new Size(150, 70);
-            button4.TabIndex = 13;
-            button4.Text = "button4";
-            button4.UseVisualStyleBackColor = true;
+            label1.AutoSize = true;
+            label1.Location = new Point(36, 32);
+            label1.Name = "label1";
+            label1.Size = new Size(36, 15);
+            label1.TabIndex = 0;
+            label1.Text = "Clave";
             // 
             // CatalogoArt
             // 
