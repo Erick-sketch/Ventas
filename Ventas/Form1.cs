@@ -23,7 +23,8 @@ namespace Ventas
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            if (vtxt.validaID(textBox1.Text))
+            bool v = vtxt.validaCampos(textBox1.Text, txtPSW.Text, textBox2.Text, comboBox1.Text, textBox4.Text);
+            if (v)
             {
                 try
                 {
@@ -269,7 +270,10 @@ namespace Ventas
             return false;
         }
 
-
+        internal bool validaCampos(string text1, string text2, object text3, object )
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 
