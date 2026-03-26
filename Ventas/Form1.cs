@@ -268,6 +268,8 @@ namespace Ventas
                MessageBox.Show("Todos los campos deben ser llenados.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return false;
         }
+
+
     }
 }
 
