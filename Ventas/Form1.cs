@@ -7,6 +7,7 @@ namespace Ventas
 
     public partial class Personal : Form
     {
+        valida_txt vtxt = new valida_txt();
         private readonly string rutaArchivo = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "VentasPersonal.txt");
         private string linea = "";
 
@@ -22,21 +23,26 @@ namespace Ventas
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            linea = textBox1.Text + "," + textBox2.Text + "," + textBox3.Text + "," + comboBox1.Text + "," + textBox4.Text;
-
-            try
+            if (vtxt.validaID(textBox1.Text))
             {
-                using (StreamWriter arch = new StreamWriter(rutaArchivo, true))
+                try
                 {
-                    arch.WriteLine(linea);
+                    using (StreamWriter arch = new StreamWriter(rutaArchivo, true))
+                    {
+                        string registro = textBox1.Text + "," + textBox2.Text + "," + txtPSW.Text + "," + comboBox1.Text + "," + textBox4.Text;
+                        arch.WriteLine(registro);
+                    }
+                    MessageBox.Show("Registro agregado correctamente.");
+                    LimpiarCampos();
                 }
-
-                MessageBox.Show("El registro se ha agregado correctamente");
-                LimpiarCampos();
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al escribir en el archivo: " + ex.Message);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show("Error al guardar el registro: " + ex.Message);
+                MessageBox.Show("La clave no puede estar vacía.");
             }
         }
 
@@ -70,7 +76,7 @@ namespace Ventas
                         if (datos.Length > 0 && datos[0] == claveBuscar)
                         {
                             textBox2.Text = datos.Length > 1 ? datos[1] : string.Empty;
-                            textBox3.Text = datos.Length > 2 ? datos[2] : string.Empty;
+                            txtPSW.Text = datos.Length > 2 ? datos[2] : string.Empty;
                             comboBox1.Text = datos.Length > 3 ? datos[3] : string.Empty;
                             textBox4.Text = datos.Length > 4 ? datos[4] : string.Empty;
                             encontrado = true;
@@ -117,7 +123,7 @@ namespace Ventas
 
                         if (datos.Length > 0 && datos[0] == claveBuscar)
                         {
-                            linea = textBox1.Text + "," + textBox2.Text + "," + textBox3.Text + "," + comboBox1.Text + "," + textBox4.Text;
+                            linea = textBox1.Text + "," + textBox2.Text + "," + txtPSW.Text + "," + comboBox1.Text + "," + textBox4.Text;
                             encontrado = true;
                         }
 
@@ -211,7 +217,7 @@ namespace Ventas
         {
             textBox1.Clear();
             textBox2.Clear();
-            textBox3.Clear();
+            txtPSW.Clear();
             comboBox1.Text = "";
             textBox4.Clear();
             textBox1.Focus();
@@ -221,5 +227,48 @@ namespace Ventas
         {
 
         }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtPSW_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+    }
+
+
+    class valida_txt()
+    {
+        public bool validaID(string id)
+        {
+            if(id != "")
+                return true;
+            else
+                return false;
+        }
+
+        public bool validaCampos(string clave,string nombre, string psw, string cargo, string salario)
+        {
+            if (clave != "" && nombre != "" && psw != "" && cargo != "" && salario != "")
+                return true;
+            else
+               MessageBox.Show("Todos los campos deben ser llenados.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return false;
+        }
     }
 }
+
+

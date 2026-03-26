@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             groupBox1 = new GroupBox();
+            button1 = new Button();
             comboBox1 = new ComboBox();
             button4 = new Button();
             button3 = new Button();
             button2 = new Button();
-            button1 = new Button();
             textBox4 = new TextBox();
-            textBox3 = new TextBox();
+            txtPSW = new TextBox();
             textBox2 = new TextBox();
             textBox1 = new TextBox();
             label5 = new Label();
@@ -48,13 +48,13 @@
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(button1);
             groupBox1.Controls.Add(comboBox1);
             groupBox1.Controls.Add(button4);
             groupBox1.Controls.Add(button3);
             groupBox1.Controls.Add(button2);
-            groupBox1.Controls.Add(button1);
             groupBox1.Controls.Add(textBox4);
-            groupBox1.Controls.Add(textBox3);
+            groupBox1.Controls.Add(txtPSW);
             groupBox1.Controls.Add(textBox2);
             groupBox1.Controls.Add(textBox1);
             groupBox1.Controls.Add(label5);
@@ -68,6 +68,19 @@
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Datos del personal";
+            // 
+            // button1
+            // 
+            button1.Image = Properties.Resources.Add_User_icon;
+            button1.ImageAlign = ContentAlignment.MiddleLeft;
+            button1.Location = new Point(6, 280);
+            button1.Name = "button1";
+            button1.Size = new Size(150, 70);
+            button1.TabIndex = 15;
+            button1.Text = "Agregar";
+            button1.TextAlign = ContentAlignment.MiddleRight;
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click_1;
             // 
             // comboBox1
             // 
@@ -113,20 +126,7 @@
             button2.Text = "Consultar";
             button2.TextAlign = ContentAlignment.MiddleRight;
             button2.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            button1.Image = Properties.Resources.Add_User_icon;
-            button1.ImageAlign = ContentAlignment.MiddleLeft;
-            button1.Location = new Point(6, 280);
-            button1.Name = "button1";
-            button1.Size = new Size(150, 70);
-            button1.TabIndex = 10;
-            button1.Text = "Agregar";
-            button1.TextAlign = ContentAlignment.MiddleRight;
-            button1.UseCompatibleTextRendering = true;
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            button2.Click += button2_Click;
             // 
             // textBox4
             // 
@@ -135,12 +135,13 @@
             textBox4.Size = new Size(134, 23);
             textBox4.TabIndex = 8;
             // 
-            // textBox3
+            // txtPSW
             // 
-            textBox3.Location = new Point(23, 194);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(180, 23);
-            textBox3.TabIndex = 7;
+            txtPSW.Location = new Point(23, 194);
+            txtPSW.Name = "txtPSW";
+            txtPSW.Size = new Size(180, 23);
+            txtPSW.TabIndex = 7;
+            txtPSW.TextChanged += txtPSW_TextChanged;
             // 
             // textBox2
             // 
@@ -179,9 +180,10 @@
             label3.AutoSize = true;
             label3.Location = new Point(23, 163);
             label3.Name = "label3";
-            label3.Size = new Size(31, 15);
+            label3.Size = new Size(67, 15);
             label3.TabIndex = 2;
-            label3.Text = "RFC ";
+            label3.Text = "Contraseña";
+            label3.Click += label3_Click;
             // 
             // label2
             // 
@@ -227,9 +229,9 @@
         private Button button4;
         private Button button3;
         private Button button2;
-        private Button button1;
         private TextBox textBox4;
-        private TextBox textBox3;
+        private TextBox txtPSW;
         private TextBox textBox2;
+        public Button button1;
     }
 }
