@@ -34,6 +34,7 @@
             button4 = new Button();
             button3 = new Button();
             button2 = new Button();
+            btnLimpiarDuplicados = new Button();
             textBox4 = new TextBox();
             txtPSW = new TextBox();
             textBox2 = new TextBox();
@@ -53,6 +54,7 @@
             groupBox1.Controls.Add(button4);
             groupBox1.Controls.Add(button3);
             groupBox1.Controls.Add(button2);
+            groupBox1.Controls.Add(btnLimpiarDuplicados);
             groupBox1.Controls.Add(textBox4);
             groupBox1.Controls.Add(txtPSW);
             groupBox1.Controls.Add(textBox2);
@@ -127,6 +129,16 @@
             button2.TextAlign = ContentAlignment.MiddleRight;
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
+            // 
+            // btnLimpiarDuplicados
+            // 
+            btnLimpiarDuplicados.Location = new Point(6, 360);
+            btnLimpiarDuplicados.Name = "btnLimpiarDuplicados";
+            btnLimpiarDuplicados.Size = new Size(652, 23);
+            btnLimpiarDuplicados.TabIndex = 16;
+            btnLimpiarDuplicados.Text = "Limpiar Duplicados";
+            btnLimpiarDuplicados.UseVisualStyleBackColor = true;
+            btnLimpiarDuplicados.Click += BtnLimpiarDuplicados_Click;
             // 
             // textBox4
             // 
@@ -229,6 +241,7 @@
         private Button button4;
         private Button button3;
         private Button button2;
+        private Button btnLimpiarDuplicados;
         private TextBox textBox4;
         private TextBox txtPSW;
         private TextBox textBox2;

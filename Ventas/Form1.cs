@@ -81,6 +81,16 @@ namespace Ventas
                             comboBox1.Text = datos.Length > 3 ? datos[3] : string.Empty;
                             textBox4.Text = datos.Length > 4 ? datos[4] : string.Empty;
                             encontrado = true;
+
+                            // Mostrar MessageBox con todos los datos
+                            string mensaje = $"Datos del Personal\n\n" +
+                                           $"Clave: {datos[0].Trim()}\n" +
+                                           $"Nombre: {(datos.Length > 1 ? datos[1].Trim() : "N/A")}\n" +
+                                           $"Contraseña: {(datos.Length > 2 ? datos[2].Trim() : "N/A")}\n" +
+                                           $"Cargo: {(datos.Length > 3 ? datos[3].Trim() : "N/A")}\n" +
+                                           $"Salario: ${(datos.Length > 4 ? datos[4].Trim() : "0.00")}";
+
+                            MessageBox.Show(mensaje, "Información del Personal", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             break;
                         }
                     }
@@ -246,7 +256,71 @@ namespace Ventas
 
         private void button2_Click(object sender, EventArgs e)
         {
+            btnSearch_Click(sender, e);
+        }
 
+        private void BtnLimpiarDuplicados_Click(object sender, EventArgs e)
+        {
+            EliminarDuplicados();
+        }
+
+        private void EliminarDuplicados()
+        {
+            try
+            {
+                if (!File.Exists(rutaArchivo))
+                    return;
+
+                List<string> registros = new List<string>();
+                HashSet<string> clavesVistas = new HashSet<string>();
+                int duplicadosEliminados = 0;
+
+                // Leer archivo y filtrar duplicados
+                using (StreamReader arch = new StreamReader(rutaArchivo))
+                {
+                    string linea;
+                    while ((linea = arch.ReadLine()) != null)
+                    {
+                        if (string.IsNullOrWhiteSpace(linea))
+                            continue;
+
+                        string[] datos = linea.Split(',');
+
+                        if (datos.Length > 0)
+                        {
+                            string clave = datos[0].Trim();
+
+                            // Si la clave no ha sido vista, la agregamos
+                            if (!clavesVistas.Contains(clave))
+                            {
+                                registros.Add(linea);
+                                clavesVistas.Add(clave);
+                            }
+                            else
+                            {
+                                // Es un duplicado, lo contamos pero no lo agregamos
+                                duplicadosEliminados++;
+                            }
+                        }
+                    }
+                }
+
+                // Si hay duplicados, reescribir el archivo
+                if (duplicadosEliminados > 0)
+                {
+                    using (StreamWriter archW = new StreamWriter(rutaArchivo, false))
+                    {
+                        foreach (string reg in registros)
+                            archW.WriteLine(reg);
+                    }
+
+                    MessageBox.Show($"Se eliminaron {duplicadosEliminados} registros duplicados.", "Limpieza completada", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al eliminar duplicados: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 
@@ -268,11 +342,6 @@ namespace Ventas
             else
                MessageBox.Show("Todos los campos deben ser llenados.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return false;
-        }
-
-        internal bool validaCampos(string text1, string text2, object text3, object )
-        {
-            throw new NotImplementedException();
         }
     }
 }

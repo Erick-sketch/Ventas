@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             groupBox1 = new GroupBox();
-            label1 = new Label();
-            label2 = new Label();
-            button1 = new Button();
-            button2 = new Button();
-            textBox1 = new TextBox();
             textBox2 = new TextBox();
+            textBox1 = new TextBox();
+            button2 = new Button();
+            button1 = new Button();
+            label2 = new Label();
+            label1 = new Label();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
@@ -53,14 +53,40 @@
             groupBox1.TabStop = false;
             groupBox1.Text = "Sesión";
             // 
-            // label1
+            // textBox2
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(43, 93);
-            label1.Name = "label1";
-            label1.Size = new Size(47, 15);
-            label1.TabIndex = 0;
-            label1.Text = "Usuario";
+            textBox2.Location = new Point(380, 111);
+            textBox2.Name = "textBox2";
+            textBox2.Size = new Size(188, 23);
+            textBox2.TabIndex = 5;
+            textBox2.UseSystemPasswordChar = true;
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(43, 111);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(191, 23);
+            textBox1.TabIndex = 4;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(399, 220);
+            button2.Name = "button2";
+            button2.Size = new Size(150, 70);
+            button2.TabIndex = 3;
+            button2.Text = "Cancelar";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(84, 220);
+            button1.Name = "button1";
+            button1.Size = new Size(150, 70);
+            button1.TabIndex = 2;
+            button1.Text = "Aceptar";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // label2
             // 
@@ -71,37 +97,14 @@
             label2.TabIndex = 1;
             label2.Text = "Contraseña";
             // 
-            // button1
+            // label1
             // 
-            button1.Location = new Point(84, 220);
-            button1.Name = "button1";
-            button1.Size = new Size(150, 70);
-            button1.TabIndex = 2;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            button2.Location = new Point(399, 220);
-            button2.Name = "button2";
-            button2.Size = new Size(150, 70);
-            button2.TabIndex = 3;
-            button2.Text = "button2";
-            button2.UseVisualStyleBackColor = true;
-            // 
-            // textBox1
-            // 
-            textBox1.Location = new Point(43, 111);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(191, 23);
-            textBox1.TabIndex = 4;
-            // 
-            // textBox2
-            // 
-            textBox2.Location = new Point(380, 111);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(188, 23);
-            textBox2.TabIndex = 5;
+            label1.AutoSize = true;
+            label1.Location = new Point(43, 93);
+            label1.Name = "label1";
+            label1.Size = new Size(36, 15);
+            label1.TabIndex = 0;
+            label1.Text = "Clave";
             // 
             // Form5
             // 

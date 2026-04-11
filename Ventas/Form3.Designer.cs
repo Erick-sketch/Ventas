@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CatalogoArt));
             groupBox1 = new GroupBox();
             button4 = new Button();
             button3 = new Button();
@@ -71,38 +72,50 @@
             // 
             // button4
             // 
+            button4.Image = (Image)resources.GetObject("button4.Image");
+            button4.ImageAlign = ContentAlignment.MiddleLeft;
             button4.Location = new Point(580, 267);
             button4.Name = "button4";
             button4.Size = new Size(150, 70);
             button4.TabIndex = 13;
-            button4.Text = "button4";
+            button4.Text = "Eliminar";
+            button4.TextAlign = ContentAlignment.MiddleRight;
             button4.UseVisualStyleBackColor = true;
             // 
             // button3
             // 
+            button3.Image = (Image)resources.GetObject("button3.Image");
+            button3.ImageAlign = ContentAlignment.MiddleLeft;
             button3.Location = new Point(402, 265);
             button3.Name = "button3";
             button3.Size = new Size(150, 70);
             button3.TabIndex = 12;
-            button3.Text = "button3";
+            button3.Text = "Editar";
+            button3.TextAlign = ContentAlignment.MiddleRight;
             button3.UseVisualStyleBackColor = true;
             // 
             // button2
             // 
+            button2.Image = Properties.Resources.icons8_buscar_50;
+            button2.ImageAlign = ContentAlignment.MiddleLeft;
             button2.Location = new Point(213, 263);
             button2.Name = "button2";
             button2.Size = new Size(150, 70);
             button2.TabIndex = 11;
-            button2.Text = "button2";
+            button2.Text = "Consultar";
+            button2.TextAlign = ContentAlignment.MiddleRight;
             button2.UseVisualStyleBackColor = true;
             // 
             // button1
             // 
+            button1.Image = (Image)resources.GetObject("button1.Image");
+            button1.ImageAlign = ContentAlignment.MiddleLeft;
             button1.Location = new Point(36, 265);
             button1.Name = "button1";
             button1.Size = new Size(150, 70);
             button1.TabIndex = 10;
-            button1.Text = "button1";
+            button1.Text = "Agregar";
+            button1.TextAlign = ContentAlignment.MiddleRight;
             button1.UseVisualStyleBackColor = true;
             // 
             // textBox5
