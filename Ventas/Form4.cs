@@ -79,5 +79,10 @@ namespace Ventas
         {
 
         }
+
+        private void txbdescripcion_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

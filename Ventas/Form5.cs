@@ -116,5 +116,10 @@
             textBox2.Clear();
             textBox1.Focus();
         }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

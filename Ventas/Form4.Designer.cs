@@ -85,7 +85,7 @@
             label5.AutoSize = true;
             label5.Location = new Point(526, 317);
             label5.Name = "label5";
-            label5.Size = new Size(42, 15);
+            label5.Size = new Size(41, 15);
             label5.TabIndex = 14;
             label5.Text = "Total $";
             // 
@@ -160,6 +160,7 @@
             txbdescripcion.Name = "txbdescripcion";
             txbdescripcion.Size = new Size(315, 23);
             txbdescripcion.TabIndex = 5;
+            txbdescripcion.TextChanged += txbdescripcion_TextChanged;
             // 
             // txbclave
             // 

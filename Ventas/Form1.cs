@@ -322,6 +322,11 @@ namespace Ventas
                 MessageBox.Show("Error al eliminar duplicados: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 
 
