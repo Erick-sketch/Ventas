@@ -45,11 +45,19 @@
             label3 = new Label();
             label2 = new Label();
             label1 = new Label();
+            label6 = new Label();
+            textBox1 = new TextBox();
+            listBox5 = new ListBox();
+            button1 = new Button();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(button1);
+            groupBox1.Controls.Add(listBox5);
+            groupBox1.Controls.Add(textBox1);
+            groupBox1.Controls.Add(label6);
             groupBox1.Controls.Add(textBox5);
             groupBox1.Controls.Add(label5);
             groupBox1.Controls.Add(btnEliminar);
@@ -68,14 +76,14 @@
             groupBox1.Controls.Add(label1);
             groupBox1.Location = new Point(48, 51);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(829, 369);
+            groupBox1.Size = new Size(974, 369);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Detalle de Venta";
             // 
             // textBox5
             // 
-            textBox5.Location = new Point(574, 317);
+            textBox5.Location = new Point(780, 308);
             textBox5.Name = "textBox5";
             textBox5.Size = new Size(168, 23);
             textBox5.TabIndex = 15;
@@ -83,7 +91,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(526, 317);
+            label5.Location = new Point(732, 308);
             label5.Name = "label5";
             label5.Size = new Size(41, 15);
             label5.TabIndex = 14;
@@ -206,11 +214,46 @@
             label1.TabIndex = 0;
             label1.Text = "Clave";
             // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(824, 51);
+            label6.Name = "label6";
+            label6.Size = new Size(49, 15);
+            label6.TabIndex = 16;
+            label6.Text = "Importe";
+            label6.Click += label6_Click;
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(824, 69);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(124, 23);
+            textBox1.TabIndex = 17;
+            // 
+            // listBox5
+            // 
+            listBox5.FormattingEnabled = true;
+            listBox5.Location = new Point(824, 98);
+            listBox5.Name = "listBox5";
+            listBox5.Size = new Size(124, 184);
+            listBox5.TabIndex = 18;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(411, 308);
+            button1.Name = "button1";
+            button1.Size = new Size(147, 55);
+            button1.TabIndex = 19;
+            button1.Text = "Registrar Venta";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // FormVentas
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(919, 450);
+            ClientSize = new Size(1074, 450);
             Controls.Add(groupBox1);
             Name = "FormVentas";
             Text = "Frm Ventas";
@@ -241,5 +284,8 @@
         private Button btnAgregar;
         private TextBox textBox5;
         private Label label5;
+        private Label label6;
+        private Button button1;
+        private ListBox listBox5;
     }
 }

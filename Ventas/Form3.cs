@@ -19,7 +19,8 @@ namespace Ventas
             InitializeComponent();
             CargarArticulos();
 
-            // Conectar evento del botón Consultar
+            // Conectar eventos de botones
+            Controls.OfType<Button>().FirstOrDefault(b => b.Name == "button1").Click += BtnAgregar_Click;
             Controls.OfType<Button>().FirstOrDefault(b => b.Name == "button2").Click += BtnConsultar_Click;
         }
 
@@ -66,6 +67,47 @@ namespace Ventas
             {
                 MessageBox.Show("Error al cargar artículos: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void BtnAgregar_Click(object sender, EventArgs e)
+        {
+            var textboxes = Controls.OfType<TextBox>().OrderBy(t => t.Name).ToList();
+
+            string clave = textboxes.FirstOrDefault(t => t.Name == "textBox1")?.Text.Trim() ?? string.Empty;
+            string descripcion = textboxes.FirstOrDefault(t => t.Name == "textBox2")?.Text.Trim() ?? string.Empty;
+            string evidencias = textboxes.FirstOrDefault(t => t.Name == "textBox3")?.Text.Trim() ?? string.Empty;
+            string costo = textboxes.FirstOrDefault(t => t.Name == "textBox4")?.Text.Trim() ?? string.Empty;
+            string precio = textboxes.FirstOrDefault(t => t.Name == "textBox5")?.Text.Trim() ?? string.Empty;
+
+            if (string.IsNullOrEmpty(clave) || string.IsNullOrEmpty(descripcion) || string.IsNullOrEmpty(costo) || string.IsNullOrEmpty(precio))
+            {
+                MessageBox.Show("Todos los campos (Clave, Descripción, Costo, Precio) son requeridos.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                using (StreamWriter arch = new StreamWriter(rutaArchivo, true))
+                {
+                    string registro = $"{clave},{descripcion},{evidencias},{costo},{precio}";
+                    arch.WriteLine(registro);
+                }
+
+                MessageBox.Show("Artículo agregado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LimpiarCamposArticulo();
+                CargarArticulos();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al agregar artículo: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void LimpiarCamposArticulo()
+        {
+            var textboxes = Controls.OfType<TextBox>().ToList();
+            foreach (var tb in textboxes)
+                tb.Clear();
         }
 
         private void label5_Click(object sender, EventArgs e)
