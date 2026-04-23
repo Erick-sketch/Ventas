@@ -22,6 +22,7 @@ namespace Ventas
             // Conectar eventos de botones
             Controls.OfType<Button>().FirstOrDefault(b => b.Name == "btnAgregar").Click += BtnAgregar_Click;
             Controls.OfType<Button>().FirstOrDefault(b => b.Name == "btnEliminar").Click += BtnEliminar_Click;
+            Controls.OfType<Button>().FirstOrDefault(b => b.Name == "btnRegistar").Click += BtnRegistrar_Click;
         }
 
         private void CargarVentas()
@@ -124,12 +125,26 @@ namespace Ventas
                 }
 
                 MessageBox.Show($"Venta registrada correctamente.\nTotal: ${total:F2}", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Agregar a la lista de detalle
+                AgregarAlDetalle(clave, descripcion, unidades, precio, total);
+
                 LimpiarCamposVenta();
                 CargarVentas();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error al registrar venta: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void AgregarAlDetalle(string clave, string descripcion, string unidades, string precio, decimal total)
+        {
+            var listDetalleVenta = Controls.OfType<ListBox>().FirstOrDefault(l => l.Name == "list_detalleventa");
+            if (listDetalleVenta != null)
+            {
+                string linea = $"Clave: {clave} | Desc: {descripcion} | Cantidad: {unidades} | Precio: ${precio} | Total: ${total:F2}";
+                listDetalleVenta.Items.Add(linea);
             }
         }
 
@@ -200,14 +215,92 @@ namespace Ventas
                 tb.Clear();
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            BtnRegistrar_Click(sender, e);
+        }
+
         private void label6_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void BtnRegistrar_Click(object sender, EventArgs e)
         {
+            var listboxes = Controls.OfType<ListBox>().ToList();
 
+            // Validar que haya artículos en la venta
+            if (listboxes.Count < 1 || listboxes[0].Items.Count == 0)
+            {
+                MessageBox.Show("Debe agregar al menos un artículo a la venta.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                // Leer todas las ventas del listbox principal
+                decimal totalVenta = 0;
+                bool ventasValidas = true;
+
+                for (int i = 0; i < listboxes[0].Items.Count; i++)
+                {
+                    string idVenta = listboxes[0].Items[i]?.ToString() ?? string.Empty;
+                    string descripcion = listboxes[1].Items.Count > i ? listboxes[1].Items[i]?.ToString() ?? string.Empty : string.Empty;
+                    string cantidadStr = listboxes[2].Items.Count > i ? listboxes[2].Items[i]?.ToString() ?? string.Empty : string.Empty;
+                    string precioStr = listboxes[3].Items.Count > i ? listboxes[3].Items[i]?.ToString() ?? string.Empty : string.Empty;
+
+                    if (decimal.TryParse(cantidadStr, out decimal cantidad) && decimal.TryParse(precioStr, out decimal precio))
+                    {
+                        totalVenta += cantidad * precio;
+                    }
+                    else
+                    {
+                        ventasValidas = false;
+                        break;
+                    }
+                }
+
+                if (!ventasValidas)
+                {
+                    MessageBox.Show("Algunos datos de la venta no son válidos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Actualizar el total en el textBox5
+                var textbox5 = Controls.OfType<TextBox>().FirstOrDefault(t => t.Name == "textBox5");
+                if (textbox5 != null)
+                    textbox5.Text = totalVenta.ToString("F2");
+
+                // Agregar el importe total al list_import
+                if (listboxes.Count > 4)
+                {
+                    listboxes[4].Items.Add(totalVenta.ToString("F2"));
+                }
+
+                // También agregar al txb_importe
+                var txbImporte = Controls.OfType<TextBox>().FirstOrDefault(t => t.Name == "txb_importe");
+                if (txbImporte != null)
+                    txbImporte.Text = totalVenta.ToString("F2");
+
+                MessageBox.Show($"Venta registrada correctamente.\nTotal: ${totalVenta:F2}\nArtículos: {listboxes[0].Items.Count}", 
+                    "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Limpiar campos y detalle
+                LimpiarCamposVenta();
+                LimpiarDetalle();
+                CargarVentas();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al registrar venta: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void LimpiarDetalle()
+        {
+            var listDetalleVenta = Controls.OfType<ListBox>().FirstOrDefault(l => l.Name == "list_detalleventa");
+            if (listDetalleVenta != null)
+                listDetalleVenta.Items.Clear();
         }
     }
 }

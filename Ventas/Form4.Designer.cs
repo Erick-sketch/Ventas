@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             groupBox1 = new GroupBox();
+            groupBox2 = new GroupBox();
             textBox5 = new TextBox();
             label5 = new Label();
             btnEliminar = new Button();
@@ -46,17 +47,19 @@
             label2 = new Label();
             label1 = new Label();
             label6 = new Label();
-            textBox1 = new TextBox();
-            listBox5 = new ListBox();
-            button1 = new Button();
+            txb_importe = new TextBox();
+            list_import = new ListBox();
+            btnRegistar = new Button();
+            list_detalleventa = new ListBox();
             groupBox1.SuspendLayout();
+            groupBox2.SuspendLayout();
             SuspendLayout();
             // 
             // groupBox1
             // 
-            groupBox1.Controls.Add(button1);
-            groupBox1.Controls.Add(listBox5);
-            groupBox1.Controls.Add(textBox1);
+            groupBox1.Controls.Add(btnRegistar);
+            groupBox1.Controls.Add(list_import);
+            groupBox1.Controls.Add(txb_importe);
             groupBox1.Controls.Add(label6);
             groupBox1.Controls.Add(textBox5);
             groupBox1.Controls.Add(label5);
@@ -224,50 +227,71 @@
             label6.Text = "Importe";
             label6.Click += label6_Click;
             // 
-            // textBox1
+            // txb_importe
             // 
-            textBox1.Location = new Point(824, 69);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(124, 23);
-            textBox1.TabIndex = 17;
+            txb_importe.Location = new Point(824, 69);
+            txb_importe.Name = "txb_importe";
+            txb_importe.Size = new Size(124, 23);
+            txb_importe.TabIndex = 17;
             // 
-            // listBox5
+            // list_import
             // 
-            listBox5.FormattingEnabled = true;
-            listBox5.Location = new Point(824, 98);
-            listBox5.Name = "listBox5";
-            listBox5.Size = new Size(124, 184);
-            listBox5.TabIndex = 18;
+            list_import.FormattingEnabled = true;
+            list_import.Location = new Point(824, 98);
+            list_import.Name = "list_import";
+            list_import.Size = new Size(124, 184);
+            list_import.TabIndex = 18;
             // 
-            // button1
+            // btnRegistar
             // 
-            button1.Location = new Point(411, 308);
-            button1.Name = "button1";
-            button1.Size = new Size(147, 55);
-            button1.TabIndex = 19;
-            button1.Text = "Registrar Venta";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            btnRegistar.Location = new Point(411, 308);
+            btnRegistar.Name = "btnRegistar";
+            btnRegistar.Size = new Size(147, 55);
+            btnRegistar.TabIndex = 19;
+            btnRegistar.Text = "Registrar Venta";
+            btnRegistar.UseVisualStyleBackColor = true;
+            btnRegistar.Click += button1_Click;
+            // 
+            // groupBox2
+            // 
+            groupBox2.Controls.Add(list_detalleventa);
+            groupBox2.Location = new Point(48, 426);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(974, 200);
+            groupBox2.TabIndex = 1;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Resumen de Artículos Agregados";
+            // 
+            // list_detalleventa
+            // 
+            list_detalleventa.FormattingEnabled = true;
+            list_detalleventa.Location = new Point(6, 22);
+            list_detalleventa.Name = "list_detalleventa";
+            list_detalleventa.Size = new Size(962, 172);
+            list_detalleventa.TabIndex = 0;
             // 
             // FormVentas
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1074, 450);
+            ClientSize = new Size(1074, 650);
+            Controls.Add(groupBox2);
             Controls.Add(groupBox1);
             Name = "FormVentas";
             Text = "Frm Ventas";
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
+            groupBox2.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
 
         private GroupBox groupBox1;
+        private GroupBox groupBox2;
         private TextBox textBox3;
         private TextBox textBox2;
-        private TextBox textBox1;
+        private TextBox txb_importe;
         private Label label4;
         private Label label3;
         private Label label2;
@@ -285,7 +309,8 @@
         private TextBox textBox5;
         private Label label5;
         private Label label6;
-        private Button button1;
-        private ListBox listBox5;
+        private Button btnRegistar;
+        private ListBox list_import;
+        private ListBox list_detalleventa;
     }
 }
