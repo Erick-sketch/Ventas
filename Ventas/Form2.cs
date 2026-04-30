@@ -21,19 +21,24 @@ namespace Ventas
         private void BtnPersona_Click(object sender, EventArgs e)
         {
             Personal frm = new Personal();
-            frm.Show();
+            frm.ShowDialog();
         }
 
         private void BtnArt_Click(object sender, EventArgs e)
         {
             CatalogoArt frm = new CatalogoArt();
-            frm.Show();
+            frm.ShowDialog();
         }
 
         private void BtnVentas_Click(object sender, EventArgs e)
         {
             FormVentas frm = new FormVentas();
-            frm.Show();
+            frm.ShowDialog();
+        }
+
+        private void btnPersona_Click_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

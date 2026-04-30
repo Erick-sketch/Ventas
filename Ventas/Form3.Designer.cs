@@ -30,10 +30,10 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CatalogoArt));
             groupBox1 = new GroupBox();
-            button4 = new Button();
-            button3 = new Button();
-            button2 = new Button();
-            button1 = new Button();
+            btnEliminar = new Button();
+            btnEditar = new Button();
+            btnConsultar = new Button();
+            btnAgregar = new Button();
             textBox5 = new TextBox();
             textBox4 = new TextBox();
             textBox3 = new TextBox();
@@ -49,10 +49,10 @@
             // 
             // groupBox1
             // 
-            groupBox1.Controls.Add(button4);
-            groupBox1.Controls.Add(button3);
-            groupBox1.Controls.Add(button2);
-            groupBox1.Controls.Add(button1);
+            groupBox1.Controls.Add(btnEliminar);
+            groupBox1.Controls.Add(btnEditar);
+            groupBox1.Controls.Add(btnConsultar);
+            groupBox1.Controls.Add(btnAgregar);
             groupBox1.Controls.Add(textBox5);
             groupBox1.Controls.Add(textBox4);
             groupBox1.Controls.Add(textBox3);
@@ -70,53 +70,53 @@
             groupBox1.TabStop = false;
             groupBox1.Text = "Articulo";
             // 
-            // button4
+            // btnEliminar
             // 
-            button4.Image = (Image)resources.GetObject("button4.Image");
-            button4.ImageAlign = ContentAlignment.MiddleLeft;
-            button4.Location = new Point(580, 267);
-            button4.Name = "button4";
-            button4.Size = new Size(150, 70);
-            button4.TabIndex = 13;
-            button4.Text = "Eliminar";
-            button4.TextAlign = ContentAlignment.MiddleRight;
-            button4.UseVisualStyleBackColor = true;
+            btnEliminar.Image = (Image)resources.GetObject("btnEliminar.Image");
+            btnEliminar.ImageAlign = ContentAlignment.MiddleLeft;
+            btnEliminar.Location = new Point(580, 267);
+            btnEliminar.Name = "btnEliminar";
+            btnEliminar.Size = new Size(150, 70);
+            btnEliminar.TabIndex = 13;
+            btnEliminar.Text = "Eliminar";
+            btnEliminar.TextAlign = ContentAlignment.MiddleRight;
+            btnEliminar.UseVisualStyleBackColor = true;
             // 
-            // button3
+            // btnEditar
             // 
-            button3.Image = (Image)resources.GetObject("button3.Image");
-            button3.ImageAlign = ContentAlignment.MiddleLeft;
-            button3.Location = new Point(402, 265);
-            button3.Name = "button3";
-            button3.Size = new Size(150, 70);
-            button3.TabIndex = 12;
-            button3.Text = "Editar";
-            button3.TextAlign = ContentAlignment.MiddleRight;
-            button3.UseVisualStyleBackColor = true;
+            btnEditar.Image = (Image)resources.GetObject("btnEditar.Image");
+            btnEditar.ImageAlign = ContentAlignment.MiddleLeft;
+            btnEditar.Location = new Point(402, 265);
+            btnEditar.Name = "btnEditar";
+            btnEditar.Size = new Size(150, 70);
+            btnEditar.TabIndex = 12;
+            btnEditar.Text = "Editar";
+            btnEditar.TextAlign = ContentAlignment.MiddleRight;
+            btnEditar.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // btnConsultar
             // 
-            button2.Image = Properties.Resources.icons8_buscar_50;
-            button2.ImageAlign = ContentAlignment.MiddleLeft;
-            button2.Location = new Point(213, 263);
-            button2.Name = "button2";
-            button2.Size = new Size(150, 70);
-            button2.TabIndex = 11;
-            button2.Text = "Consultar";
-            button2.TextAlign = ContentAlignment.MiddleRight;
-            button2.UseVisualStyleBackColor = true;
+            btnConsultar.Image = Properties.Resources.icons8_buscar_50;
+            btnConsultar.ImageAlign = ContentAlignment.MiddleLeft;
+            btnConsultar.Location = new Point(213, 263);
+            btnConsultar.Name = "btnConsultar";
+            btnConsultar.Size = new Size(150, 70);
+            btnConsultar.TabIndex = 11;
+            btnConsultar.Text = "Consultar";
+            btnConsultar.TextAlign = ContentAlignment.MiddleRight;
+            btnConsultar.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // btnAgregar
             // 
-            button1.Image = (Image)resources.GetObject("button1.Image");
-            button1.ImageAlign = ContentAlignment.MiddleLeft;
-            button1.Location = new Point(36, 265);
-            button1.Name = "button1";
-            button1.Size = new Size(150, 70);
-            button1.TabIndex = 10;
-            button1.Text = "Agregar";
-            button1.TextAlign = ContentAlignment.MiddleRight;
-            button1.UseVisualStyleBackColor = true;
+            btnAgregar.Image = (Image)resources.GetObject("btnAgregar.Image");
+            btnAgregar.ImageAlign = ContentAlignment.MiddleLeft;
+            btnAgregar.Location = new Point(36, 265);
+            btnAgregar.Name = "btnAgregar";
+            btnAgregar.Size = new Size(150, 70);
+            btnAgregar.TabIndex = 10;
+            btnAgregar.Text = "Agregar";
+            btnAgregar.TextAlign = ContentAlignment.MiddleRight;
+            btnAgregar.UseVisualStyleBackColor = true;
             // 
             // textBox5
             // 
@@ -227,9 +227,9 @@
         private TextBox textBox3;
         private TextBox textBox2;
         private TextBox textBox1;
-        private Button button2;
-        private Button button1;
-        private Button button4;
-        private Button button3;
+        private Button btnConsultar;
+        private Button btnAgregar;
+        private Button btnEliminar;
+        private Button btnEditar;
     }
 }

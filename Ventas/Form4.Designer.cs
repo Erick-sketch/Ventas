@@ -29,15 +29,18 @@
         private void InitializeComponent()
         {
             groupBox1 = new GroupBox();
-            groupBox2 = new GroupBox();
+            btnRegistar = new Button();
+            list_import = new ListBox();
+            txb_importe = new TextBox();
+            label6 = new Label();
             textBox5 = new TextBox();
             label5 = new Label();
             btnEliminar = new Button();
             btnAgregar = new Button();
-            listBox4 = new ListBox();
-            listBox3 = new ListBox();
-            listBox2 = new ListBox();
-            listBox1 = new ListBox();
+            listPrecio = new ListBox();
+            listUnidades = new ListBox();
+            listDescripcion = new ListBox();
+            listClave = new ListBox();
             txbprecio = new TextBox();
             txbunidades = new TextBox();
             txbdescripcion = new TextBox();
@@ -46,10 +49,7 @@
             label3 = new Label();
             label2 = new Label();
             label1 = new Label();
-            label6 = new Label();
-            txb_importe = new TextBox();
-            list_import = new ListBox();
-            btnRegistar = new Button();
+            groupBox2 = new GroupBox();
             list_detalleventa = new ListBox();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -65,10 +65,10 @@
             groupBox1.Controls.Add(label5);
             groupBox1.Controls.Add(btnEliminar);
             groupBox1.Controls.Add(btnAgregar);
-            groupBox1.Controls.Add(listBox4);
-            groupBox1.Controls.Add(listBox3);
-            groupBox1.Controls.Add(listBox2);
-            groupBox1.Controls.Add(listBox1);
+            groupBox1.Controls.Add(listPrecio);
+            groupBox1.Controls.Add(listUnidades);
+            groupBox1.Controls.Add(listDescripcion);
+            groupBox1.Controls.Add(listClave);
             groupBox1.Controls.Add(txbprecio);
             groupBox1.Controls.Add(txbunidades);
             groupBox1.Controls.Add(txbdescripcion);
@@ -83,6 +83,44 @@
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Detalle de Venta";
+            groupBox1.Enter += groupBox1_Enter;
+            // 
+            // btnRegistar
+            // 
+            btnRegistar.Location = new Point(411, 308);
+            btnRegistar.Name = "btnRegistar";
+            btnRegistar.Size = new Size(147, 55);
+            btnRegistar.TabIndex = 19;
+            btnRegistar.Text = "Registrar Venta";
+            btnRegistar.UseVisualStyleBackColor = true;
+            btnRegistar.Click += button1_Click;
+            // 
+            // list_import
+            // 
+            list_import.FormattingEnabled = true;
+            list_import.Location = new Point(824, 98);
+            list_import.Name = "list_import";
+            list_import.Size = new Size(124, 184);
+            list_import.TabIndex = 18;
+            list_import.SelectedIndexChanged += list_import_SelectedIndexChanged;
+            // 
+            // txb_importe
+            // 
+            txb_importe.Location = new Point(824, 69);
+            txb_importe.Name = "txb_importe";
+            txb_importe.Size = new Size(124, 23);
+            txb_importe.TabIndex = 17;
+            txb_importe.TextChanged += txb_importe_TextChanged;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(824, 51);
+            label6.Name = "label6";
+            label6.Size = new Size(49, 15);
+            label6.TabIndex = 16;
+            label6.Text = "Importe";
+            label6.Click += label6_Click;
             // 
             // textBox5
             // 
@@ -90,6 +128,7 @@
             textBox5.Name = "textBox5";
             textBox5.Size = new Size(168, 23);
             textBox5.TabIndex = 15;
+            textBox5.TextChanged += textBox5_TextChanged;
             // 
             // label5
             // 
@@ -108,6 +147,7 @@
             btnEliminar.TabIndex = 13;
             btnEliminar.Text = "Eliminar de la Venta ";
             btnEliminar.UseVisualStyleBackColor = true;
+            btnEliminar.Click += btnEliminar_Click_1;
             // 
             // btnAgregar
             // 
@@ -117,38 +157,43 @@
             btnAgregar.TabIndex = 12;
             btnAgregar.Text = "Agregar a Venta";
             btnAgregar.UseVisualStyleBackColor = true;
+            btnAgregar.Click += btnAgregar_Click_1;
             // 
-            // listBox4
+            // listPrecio
             // 
-            listBox4.FormattingEnabled = true;
-            listBox4.Location = new Point(682, 98);
-            listBox4.Name = "listBox4";
-            listBox4.Size = new Size(120, 184);
-            listBox4.TabIndex = 11;
+            listPrecio.FormattingEnabled = true;
+            listPrecio.Location = new Point(682, 98);
+            listPrecio.Name = "listPrecio";
+            listPrecio.Size = new Size(120, 184);
+            listPrecio.TabIndex = 11;
+            listPrecio.SelectedIndexChanged += listBox4_SelectedIndexChanged;
             // 
-            // listBox3
+            // listUnidades
             // 
-            listBox3.FormattingEnabled = true;
-            listBox3.Location = new Point(526, 98);
-            listBox3.Name = "listBox3";
-            listBox3.Size = new Size(135, 184);
-            listBox3.TabIndex = 10;
+            listUnidades.FormattingEnabled = true;
+            listUnidades.Location = new Point(526, 98);
+            listUnidades.Name = "listUnidades";
+            listUnidades.Size = new Size(135, 184);
+            listUnidades.TabIndex = 10;
+            listUnidades.SelectedIndexChanged += listBox3_SelectedIndexChanged;
             // 
-            // listBox2
+            // listDescripcion
             // 
-            listBox2.FormattingEnabled = true;
-            listBox2.Location = new Point(176, 98);
-            listBox2.Name = "listBox2";
-            listBox2.Size = new Size(315, 184);
-            listBox2.TabIndex = 9;
+            listDescripcion.FormattingEnabled = true;
+            listDescripcion.Location = new Point(176, 98);
+            listDescripcion.Name = "listDescripcion";
+            listDescripcion.Size = new Size(315, 184);
+            listDescripcion.TabIndex = 9;
+            listDescripcion.SelectedIndexChanged += listBox2_SelectedIndexChanged;
             // 
-            // listBox1
+            // listClave
             // 
-            listBox1.FormattingEnabled = true;
-            listBox1.Location = new Point(23, 98);
-            listBox1.Name = "listBox1";
-            listBox1.Size = new Size(120, 184);
-            listBox1.TabIndex = 8;
+            listClave.FormattingEnabled = true;
+            listClave.Location = new Point(23, 98);
+            listClave.Name = "listClave";
+            listClave.Size = new Size(120, 184);
+            listClave.TabIndex = 8;
+            listClave.SelectedIndexChanged += listBox1_SelectedIndexChanged;
             // 
             // txbprecio
             // 
@@ -164,6 +209,7 @@
             txbunidades.Name = "txbunidades";
             txbunidades.Size = new Size(135, 23);
             txbunidades.TabIndex = 6;
+            txbunidades.TextChanged += txbunidades_TextChanged;
             // 
             // txbdescripcion
             // 
@@ -179,6 +225,7 @@
             txbclave.Name = "txbclave";
             txbclave.Size = new Size(120, 23);
             txbclave.TabIndex = 4;
+            txbclave.TextChanged += txbclave_TextChanged;
             // 
             // label4
             // 
@@ -217,41 +264,6 @@
             label1.TabIndex = 0;
             label1.Text = "Clave";
             // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.Location = new Point(824, 51);
-            label6.Name = "label6";
-            label6.Size = new Size(49, 15);
-            label6.TabIndex = 16;
-            label6.Text = "Importe";
-            label6.Click += label6_Click;
-            // 
-            // txb_importe
-            // 
-            txb_importe.Location = new Point(824, 69);
-            txb_importe.Name = "txb_importe";
-            txb_importe.Size = new Size(124, 23);
-            txb_importe.TabIndex = 17;
-            // 
-            // list_import
-            // 
-            list_import.FormattingEnabled = true;
-            list_import.Location = new Point(824, 98);
-            list_import.Name = "list_import";
-            list_import.Size = new Size(124, 184);
-            list_import.TabIndex = 18;
-            // 
-            // btnRegistar
-            // 
-            btnRegistar.Location = new Point(411, 308);
-            btnRegistar.Name = "btnRegistar";
-            btnRegistar.Size = new Size(147, 55);
-            btnRegistar.TabIndex = 19;
-            btnRegistar.Text = "Registrar Venta";
-            btnRegistar.UseVisualStyleBackColor = true;
-            btnRegistar.Click += button1_Click;
-            // 
             // groupBox2
             // 
             groupBox2.Controls.Add(list_detalleventa);
@@ -267,8 +279,9 @@
             list_detalleventa.FormattingEnabled = true;
             list_detalleventa.Location = new Point(6, 22);
             list_detalleventa.Name = "list_detalleventa";
-            list_detalleventa.Size = new Size(962, 172);
+            list_detalleventa.Size = new Size(962, 169);
             list_detalleventa.TabIndex = 0;
+            list_detalleventa.SelectedIndexChanged += list_detalleventa_SelectedIndexChanged;
             // 
             // FormVentas
             // 
@@ -300,10 +313,10 @@
         private TextBox txbunidades;
         private TextBox txbdescripcion;
         private TextBox txbclave;
-        private ListBox listBox4;
-        private ListBox listBox3;
-        private ListBox listBox2;
-        private ListBox listBox1;
+        private ListBox listPrecio;
+        private ListBox listUnidades;
+        private ListBox listDescripcion;
+        private ListBox listClave;
         private Button btnEliminar;
         private Button btnAgregar;
         private TextBox textBox5;

@@ -7,12 +7,13 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Linq;
+using Microsoft.VisualBasic;
 
 namespace Ventas
 {
     public partial class FormVentas : Form
     {
-        private readonly string rutaArchivo = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "VentasVentas.txt");
+        private readonly string rutaArchivo = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "VentasArticulos.txt");
 
         public FormVentas()
         {
@@ -282,7 +283,7 @@ namespace Ventas
                 if (txbImporte != null)
                     txbImporte.Text = totalVenta.ToString("F2");
 
-                MessageBox.Show($"Venta registrada correctamente.\nTotal: ${totalVenta:F2}\nArtículos: {listboxes[0].Items.Count}", 
+                MessageBox.Show($"Venta registrada correctamente.\nTotal: ${totalVenta:F2}\nArtículos: {listboxes[0].Items.Count}",
                     "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 // Limpiar campos y detalle
@@ -302,5 +303,96 @@ namespace Ventas
             if (listDetalleVenta != null)
                 listDetalleVenta.Items.Clear();
         }
+
+        private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string linea = "";
+            string elemento = "";
+            for (int i = 0; i < listDescripcion.Items.Count; i++) 
+            {
+                elemento = listDescripcion.Items[i].ToString();
+                MessageBox.Show(elemento);
+            }
+
+        }
+
+        private void list_detalleventa_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnAgregar_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnEliminar_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox5_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void list_import_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listBox4_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string linea = "";
+            string elemento = "";
+            for (int i = 0; i < listDescripcion.Items.Count; i++)
+            {
+                linea = listDescripcion.Items[i].ToString() + "," + listDescripcion.Items[i].ToString() + "," + listDescripcion.Items[i].ToString() + "," + listDescripcion.Items[i].ToString() + "," + listDescripcion.Items[i].ToString();
+                MessageBox.Show(linea);
+            }
+        }
+
+        private void listBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string linea = "";
+            string elemento = "";
+            for (int i = 0; i < listDescripcion.Items.Count; i++)
+            {
+                elemento = listDescripcion.Items[i].ToString();
+                MessageBox.Show(elemento);
+            }
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string linea = "";
+            string elemento = "";
+            for (int i = 0; i < listDescripcion.Items.Count; i++)
+            {
+                elemento = listDescripcion.Items[i].ToString();
+                MessageBox.Show(elemento);
+            }
+        }
+
+        private void txb_importe_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txbunidades_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txbclave_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
+

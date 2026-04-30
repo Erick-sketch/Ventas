@@ -12,102 +12,99 @@ namespace Ventas
 {
     public partial class CatalogoArt : Form
     {
-        private readonly string rutaArchivo = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "VentasArticulos.txt");
+        private readonly string rutaArchivo = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            "VentasArticulos.txt");
 
         public CatalogoArt()
         {
             InitializeComponent();
             CargarArticulos();
 
-            // Conectar eventos de botones
-            Controls.OfType<Button>().FirstOrDefault(b => b.Name == "button1").Click += BtnAgregar_Click;
-            Controls.OfType<Button>().FirstOrDefault(b => b.Name == "button2").Click += BtnConsultar_Click;
+            // Eventos (usa tus botones del diseño)
+            btnAgregar.Click += BtnAgregar_Click;
+            btnConsultar.Click += BtnConsultar_Click;
+            btnEditar.Click += BtnEditar_Click;
+            btnEliminar.Click += BtnEliminar_Click;
         }
 
+        
         private void CargarArticulos()
         {
             try
             {
                 if (!File.Exists(rutaArchivo))
-                {
-                    MessageBox.Show("El archivo de artículos no existe en:\n" + rutaArchivo, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
-                }
 
-                // Limpiar ListBoxes
-                if (Controls.OfType<ListBox>().Count() >= 4)
+                
+
+                foreach (var linea in File.ReadAllLines(rutaArchivo))
                 {
-                    var listboxes = Controls.OfType<ListBox>().ToList();
-                    foreach (var lb in listboxes)
-                        lb.Items.Clear();
+                    if (string.IsNullOrWhiteSpace(linea))
+                        continue;
 
-                    using (StreamReader arch = new StreamReader(rutaArchivo))
+                    string[] datos = linea.Split(',');
+
+                    if (datos.Length >= 5)
                     {
-                        string linea;
-                        while ((linea = arch.ReadLine()) != null)
-                        {
-                            if (string.IsNullOrWhiteSpace(linea))
-                                continue;
-
-                            string[] datos = linea.Split(',');
-                            if (datos.Length >= 4)
-                            {
-                                listboxes[0].Items.Add(datos[0]); // Clave
-                                listboxes[1].Items.Add(datos[1]); // Descripción
-                                listboxes[2].Items.Add(datos[3]); // Costo
-                                listboxes[3].Items.Add(datos[4]); // Precio
-                            }
-                        }
+                        textBox1.Text = datos[0]; 
+                        textBox2.Text = datos[1];
+                        textBox4.Text = datos[3]; 
+                        textBox5.Text = datos[4]; 
                     }
-
-                    MessageBox.Show($"Se cargaron {listboxes[0].Items.Count} artículos correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar artículos: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error al cargar: " + ex.Message);
             }
         }
 
+
+
         private void BtnAgregar_Click(object sender, EventArgs e)
         {
-            var textboxes = Controls.OfType<TextBox>().OrderBy(t => t.Name).ToList();
+            string clave = textBox1.Text.Trim();
+            string descripcion = textBox2.Text.Trim();
+            string evidencias = textBox3.Text.Trim();
 
-            string clave = textboxes.FirstOrDefault(t => t.Name == "textBox1")?.Text.Trim() ?? string.Empty;
-            string descripcion = textboxes.FirstOrDefault(t => t.Name == "textBox2")?.Text.Trim() ?? string.Empty;
-            string evidencias = textboxes.FirstOrDefault(t => t.Name == "textBox3")?.Text.Trim() ?? string.Empty;
-            string costo = textboxes.FirstOrDefault(t => t.Name == "textBox4")?.Text.Trim() ?? string.Empty;
-            string precio = textboxes.FirstOrDefault(t => t.Name == "textBox5")?.Text.Trim() ?? string.Empty;
-
-            if (string.IsNullOrEmpty(clave) || string.IsNullOrEmpty(descripcion) || string.IsNullOrEmpty(costo) || string.IsNullOrEmpty(precio))
+            if (string.IsNullOrEmpty(clave) || string.IsNullOrEmpty(descripcion))
             {
-                MessageBox.Show("Todos los campos (Clave, Descripción, Costo, Precio) son requeridos.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Clave y descripción son obligatorias.");
+                return;
+            }
+
+            if (!decimal.TryParse(textBox4.Text, out decimal costo))
+            {
+                MessageBox.Show("Costo inválido.");
+                return;
+            }
+
+            if (!decimal.TryParse(textBox5.Text, out decimal precio))
+            {
+                MessageBox.Show("Precio inválido.");
+                return;
+            }
+
+            if (ExisteClave(clave))
+            {
+                MessageBox.Show("La clave ya existe.");
                 return;
             }
 
             try
             {
-                using (StreamWriter arch = new StreamWriter(rutaArchivo, true))
-                {
-                    string registro = $"{clave},{descripcion},{evidencias},{costo},{precio}";
-                    arch.WriteLine(registro);
-                }
+                string registro = $"{clave},{descripcion},{evidencias},{costo:F2},{precio:F2}";
+                File.AppendAllText(rutaArchivo, registro + Environment.NewLine);
 
-                MessageBox.Show("Artículo agregado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LimpiarCamposArticulo();
+                MessageBox.Show("Artículo agregado.");
+                LimpiarCampos();
                 CargarArticulos();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al agregar artículo: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error: " + ex.Message);
             }
-        }
-
-        private void LimpiarCamposArticulo()
-        {
-            var textboxes = Controls.OfType<TextBox>().ToList();
-            foreach (var tb in textboxes)
-                tb.Clear();
         }
 
         private void label5_Click(object sender, EventArgs e)
@@ -173,6 +170,40 @@ namespace Ventas
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void BtnEditar_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Función editar aún no implementada");
+        }
+
+        private void BtnEliminar_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Función eliminar aún no implementada");
+        }
+
+        private bool ExisteClave(string clave)
+        {
+            if (!File.Exists(rutaArchivo))
+                return false;
+
+            foreach (var linea in File.ReadAllLines(rutaArchivo))
+            {
+                var datos = linea.Split(',');
+                if (datos.Length > 0 && datos[0].Trim() == clave)
+                    return true;
+            }
+
+            return false;
+        }
+
+        private void LimpiarCampos()
+        {
+            textBox1.Clear();
+            textBox2.Clear();
+            textBox3.Clear();
+            textBox4.Clear();
+            textBox5.Clear();
         }
     }
 }
