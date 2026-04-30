@@ -35,10 +35,5 @@ namespace Ventas
             FormVentas frm = new FormVentas();
             frm.Show();
         }
-
-        private void btnPersona_Click_1(object sender, EventArgs e)
-        {
-
-        }
     }
 }
