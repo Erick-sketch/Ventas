@@ -21,7 +21,7 @@ namespace Ventas
             InitializeComponent();
             CargarArticulos();
 
-            // Eventos (usa tus botones del diseño)
+            
             btnAgregar.Click += BtnAgregar_Click;
             btnConsultar.Click += BtnConsultar_Click;
             btnEditar.Click += BtnEditar_Click;
@@ -36,8 +36,6 @@ namespace Ventas
                 if (!File.Exists(rutaArchivo))
                     return;
 
-                
-
                 foreach (var linea in File.ReadAllLines(rutaArchivo))
                 {
                     if (string.IsNullOrWhiteSpace(linea))
@@ -47,10 +45,11 @@ namespace Ventas
 
                     if (datos.Length >= 5)
                     {
-                        textBox1.Text = datos[0]; 
-                        textBox2.Text = datos[1];
-                        textBox4.Text = datos[3]; 
-                        textBox5.Text = datos[4]; 
+                        textBox1.Text = datos[0].Trim(); 
+                        textBox2.Text = datos[1].Trim();
+                        textBox3.Text = datos[2].Trim();
+                        textBox4.Text = datos[3].Trim(); 
+                        textBox5.Text = datos[4].Trim(); 
                     }
                 }
             }
@@ -119,7 +118,7 @@ namespace Ventas
 
         private void BtnConsultar_Click(object sender, EventArgs e)
         {
-            string claveBuscar = Controls.OfType<TextBox>().FirstOrDefault(t => t.Name == "textBox1")?.Text.Trim();
+            string claveBuscar = textBox1.Text.Trim();
 
             if (string.IsNullOrEmpty(claveBuscar))
             {
@@ -135,27 +134,21 @@ namespace Ventas
                     return;
                 }
 
-                using (StreamReader arch = new StreamReader(rutaArchivo))
+                foreach (var linea in File.ReadAllLines(rutaArchivo))
                 {
-                    string linea;
-                    while ((linea = arch.ReadLine()) != null)
+                    if (string.IsNullOrWhiteSpace(linea))
+                        continue;
+
+                    string[] datos = linea.Split(',');
+                    if (datos.Length >= 5 && datos[0].Trim() == claveBuscar)
                     {
-                        if (string.IsNullOrWhiteSpace(linea))
-                            continue;
+                        textBox2.Text = datos[1].Trim();
+                        textBox3.Text = datos[2].Trim();
+                        textBox4.Text = datos[3].Trim();
+                        textBox5.Text = datos[4].Trim();
 
-                        string[] datos = linea.Split(',');
-                        if (datos.Length >= 5 && datos[0].Trim() == claveBuscar)
-                        {
-                            string mensaje = $"Datos del Artículo\n\n" +
-                                           $"Clave: {datos[0].Trim()}\n" +
-                                           $"Nombre: {datos[1].Trim()}\n" +
-                                           $"Descripción: {datos[2].Trim()}\n" +
-                                           $"Costo: ${datos[3].Trim()}\n" +
-                                           $"Precio: ${datos[4].Trim()}";
-
-                            MessageBox.Show(mensaje, "Información del Artículo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            return;
-                        }
+                        MessageBox.Show("Artículo encontrado.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
                     }
                 }
 
@@ -174,12 +167,113 @@ namespace Ventas
 
         private void BtnEditar_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Función editar aún no implementada");
+            string clave = textBox1.Text.Trim();
+
+            if (string.IsNullOrEmpty(clave))
+            {
+                MessageBox.Show("Ingresa la clave a editar.");
+                return;
+            }
+
+            if (!File.Exists(rutaArchivo))
+            {
+                MessageBox.Show("No existe el archivo.");
+                return;
+            }
+
+            List<string> registros = new List<string>();
+            bool encontrado = false;
+
+            foreach (var linea in File.ReadAllLines(rutaArchivo))
+            {
+                var datos = linea.Split(',');
+
+                if (datos.Length > 0 && datos[0].Trim() == clave)
+                {
+                    if (!decimal.TryParse(textBox4.Text, out decimal costo))
+                    {
+                        MessageBox.Show("Costo inválido.");
+                        return;
+                    }
+
+                    if (!decimal.TryParse(textBox5.Text, out decimal precio))
+                    {
+                        MessageBox.Show("Precio inválido.");
+                        return;
+                    }
+
+                    string nuevaLinea = $"{textBox1.Text.Trim()},{textBox2.Text.Trim()},{textBox3.Text.Trim()},{costo:F2},{precio:F2}";
+                    registros.Add(nuevaLinea);
+                    encontrado = true;
+                }
+                else
+                {
+                    registros.Add(linea);
+                }
+            }
+
+            if (encontrado)
+            {
+                File.WriteAllLines(rutaArchivo, registros);
+                MessageBox.Show("Artículo actualizado correctamente.");
+                LimpiarCampos();
+                CargarArticulos();
+            }
+            else
+            {
+                MessageBox.Show("No se encontró el artículo.");
+            }
         }
 
         private void BtnEliminar_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Función eliminar aún no implementada");
+            string clave = textBox1.Text.Trim();
+
+            if (string.IsNullOrEmpty(clave))
+            {
+                MessageBox.Show("Ingresa la clave a eliminar.");
+                return;
+            }
+
+            if (!File.Exists(rutaArchivo))
+            {
+                MessageBox.Show("No existe el archivo.");
+                return;
+            }
+
+            if (MessageBox.Show("¿Está seguro de eliminar este artículo?", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+            {
+                return;
+            }
+
+            List<string> registros = new List<string>();
+            bool eliminado = false;
+
+            foreach (var linea in File.ReadAllLines(rutaArchivo))
+            {
+                var datos = linea.Split(',');
+
+                if (datos.Length > 0 && datos[0].Trim() == clave)
+                {
+                    eliminado = true;
+                }
+                else
+                {
+                    registros.Add(linea);
+                }
+            }
+
+            if (eliminado)
+            {
+                File.WriteAllLines(rutaArchivo, registros);
+                MessageBox.Show("Artículo eliminado correctamente.");
+                LimpiarCampos();
+                CargarArticulos();
+            }
+            else
+            {
+                MessageBox.Show("No se encontró el artículo.");
+            }
         }
 
         private bool ExisteClave(string clave)
@@ -204,6 +298,7 @@ namespace Ventas
             textBox3.Clear();
             textBox4.Clear();
             textBox5.Clear();
+            textBox1.Focus();
         }
     }
 }

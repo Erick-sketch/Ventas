@@ -13,385 +13,311 @@ namespace Ventas
 {
     public partial class FormVentas : Form
     {
-        private readonly string rutaArchivo = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "VentasArticulos.txt");
+        private readonly string rutaArticulos = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            "VentasArticulos.txt");
+
+        private readonly string rutaFacturas = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            "facturas.txt");
+
+        private decimal totalVenta = 0;
 
         public FormVentas()
         {
             InitializeComponent();
-            CargarVentas();
 
             // Conectar eventos de botones
-            Controls.OfType<Button>().FirstOrDefault(b => b.Name == "btnAgregar").Click += BtnAgregar_Click;
-            Controls.OfType<Button>().FirstOrDefault(b => b.Name == "btnEliminar").Click += BtnEliminar_Click;
-            Controls.OfType<Button>().FirstOrDefault(b => b.Name == "btnRegistar").Click += BtnRegistrar_Click;
+            btnAgregar.Click += BtnAgregar_Click;
+            btnEliminar.Click += BtnEliminar_Click;
+            btnRegistar.Click += BtnRegistrar_Click;
+
+            // Evento para sincronizar ListBox
+            listClave.SelectedIndexChanged += SincronizarListas;
+            listDescripcion.SelectedIndexChanged += SincronizarListas;
+            listUnidades.SelectedIndexChanged += SincronizarListas;
+            listPrecio.SelectedIndexChanged += SincronizarListas;
+            list_import.SelectedIndexChanged += SincronizarListas;
+
+            // Cargar catálogo de productos
+            CargarCatalogoProductos();
         }
 
-        private void CargarVentas()
+        // ===============================
+        // 📦 CARGAR CATÁLOGO DE PRODUCTOS
+        // ===============================
+        private void CargarCatalogoProductos()
         {
             try
             {
-                if (!File.Exists(rutaArchivo))
+                if (!File.Exists(rutaArticulos))
                 {
-                    MessageBox.Show("El archivo de ventas no existe en:\n" + rutaArchivo, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("El archivo de artículos no existe.\nSe creará uno nuevo.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    CrearArchivoEjemplo();
                     return;
                 }
 
-                // Limpiar ListBoxes
-                var listboxes = Controls.OfType<ListBox>().ToList();
-                foreach (var lb in listboxes)
-                    lb.Items.Clear();
+                int productosEncontrados = 0;
 
-                int registrosVentas = 0;
-                decimal totalVentas = 0;
-
-                using (StreamReader arch = new StreamReader(rutaArchivo))
+                foreach (var linea in File.ReadAllLines(rutaArticulos))
                 {
-                    string linea;
-                    while ((linea = arch.ReadLine()) != null)
+                    if (string.IsNullOrWhiteSpace(linea))
+                        continue;
+
+                    string[] datos = linea.Split(',');
+
+                    // Formato: Clave,Descripción,Existencias,Costo,Precio
+                    if (datos.Length >= 5)
                     {
-                        if (string.IsNullOrWhiteSpace(linea))
-                            continue;
+                        string clave = datos[0].Trim();
+                        string descripcion = datos[1].Trim();
+                        string precio = datos[4].Trim();
 
-                        string[] datos = linea.Split(',');
-                        // Formato: IdVenta,IdArticulo,Descripcion,Cantidad,PrecioUnitario,Total,Fecha
-                        if (datos.Length >= 7 && listboxes.Count >= 4)
-                        {
-                            listboxes[0].Items.Add(datos[0]); // ID Venta
-                            listboxes[1].Items.Add(datos[2]); // Descripción
-                            listboxes[2].Items.Add(datos[3]); // Cantidad
-                            listboxes[3].Items.Add(datos[5]); // Total
-
-                            registrosVentas++;
-                            if (decimal.TryParse(datos[5], out decimal total))
-                                totalVentas += total;
-                        }
+                        productosEncontrados++;
                     }
                 }
 
-                MessageBox.Show($"Se cargaron {registrosVentas} ventas.\nTotal: ${totalVentas:F2}", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"Catálogo cargado: {productosEncontrados} productos disponibles.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar ventas: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error al cargar catálogo: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void textBox4_TextChanged(object sender, EventArgs e)
+        // ===============================
+        // 📝 CREAR ARCHIVO EJEMPLO
+        // ===============================
+        private void CrearArchivoEjemplo()
         {
+            try
+            {
+                List<string> productos = new List<string>
+                {
+                    "P001,Laptop Dell,10,800.00,1200.00",
+                    "P002,Mouse Logitech,50,15.00,25.00",
+                    "P003,Teclado Mecánico,30,60.00,100.00",
+                    "P004,Monitor LG 24\",15,200.00,350.00",
+                    "P005,Cable HDMI,100,5.00,10.00"
+                };
 
+                File.WriteAllLines(rutaArticulos, productos);
+                MessageBox.Show("Archivo de ejemplo creado.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al crear archivo: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txbdescripcion_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
+        // ===============================
+        // 🟢 AGREGAR PRODUCTO (CARRITO)
+        // ===============================
         private void BtnAgregar_Click(object sender, EventArgs e)
         {
-            string clave = Controls.OfType<TextBox>().FirstOrDefault(t => t.Name == "txbclave")?.Text.Trim() ?? string.Empty;
-            string descripcion = Controls.OfType<TextBox>().FirstOrDefault(t => t.Name == "txbdescripcion")?.Text.Trim() ?? string.Empty;
-            string unidades = Controls.OfType<TextBox>().FirstOrDefault(t => t.Name == "txbunidades")?.Text.Trim() ?? string.Empty;
-            string precio = Controls.OfType<TextBox>().FirstOrDefault(t => t.Name == "txbprecio")?.Text.Trim() ?? string.Empty;
+            string clave = txbclave.Text.Trim();
+            string descripcion = txbdescripcion.Text.Trim();
+            string unidades = txbunidades.Text.Trim();
+            string precio = txbprecio.Text.Trim();
 
-            if (string.IsNullOrEmpty(clave) || string.IsNullOrEmpty(descripcion) || string.IsNullOrEmpty(unidades) || string.IsNullOrEmpty(precio))
+            // Validación básica
+            if (string.IsNullOrEmpty(clave) || string.IsNullOrEmpty(descripcion) || 
+                string.IsNullOrEmpty(unidades) || string.IsNullOrEmpty(precio))
             {
-                MessageBox.Show("Todos los campos son requeridos.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Completa todos los campos.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (!decimal.TryParse(unidades, out decimal cantidadNum) || !decimal.TryParse(precio, out decimal precioNum))
+            // Validar que sean números
+            if (!int.TryParse(unidades, out int cant) || !decimal.TryParse(precio, out decimal pre))
             {
-                MessageBox.Show("Unidades y Precio deben ser números válidos.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Unidades o precio inválido.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (cant <= 0 || pre <= 0)
+            {
+                MessageBox.Show("Unidades y precio deben ser mayores que cero.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             try
             {
-                // Generar ID de venta (timestamp)
-                string idVenta = DateTime.Now.Ticks.ToString();
-                decimal total = cantidadNum * precioNum;
-                string fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                // Agregar a los ListBox
+                listClave.Items.Add(clave);
+                listDescripcion.Items.Add(descripcion);
+                listUnidades.Items.Add(cant);
+                listPrecio.Items.Add(pre.ToString("F2"));
 
-                // Formato: IdVenta,IdArticulo,Descripcion,Cantidad,PrecioUnitario,Total,Fecha
-                string registro = $"{idVenta},{clave},{descripcion},{unidades},{precio},{total:F2},{fecha}";
+                decimal importe = cant * pre;
+                list_import.Items.Add(importe.ToString("F2"));
 
-                using (StreamWriter arch = new StreamWriter(rutaArchivo, true))
-                {
-                    arch.WriteLine(registro);
-                }
+                // Actualizar total
+                totalVenta += importe;
+                ActualizarTotal();
 
-                MessageBox.Show($"Venta registrada correctamente.\nTotal: ${total:F2}", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // Limpiar campos
+                LimpiarCampos();
+                txbclave.Focus();
 
-                // Agregar a la lista de detalle
-                AgregarAlDetalle(clave, descripcion, unidades, precio, total);
-
-                LimpiarCamposVenta();
-                CargarVentas();
+                MessageBox.Show("Producto agregado al carrito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al registrar venta: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void AgregarAlDetalle(string clave, string descripcion, string unidades, string precio, decimal total)
-        {
-            var listDetalleVenta = Controls.OfType<ListBox>().FirstOrDefault(l => l.Name == "list_detalleventa");
-            if (listDetalleVenta != null)
-            {
-                string linea = $"Clave: {clave} | Desc: {descripcion} | Cantidad: {unidades} | Precio: ${precio} | Total: ${total:F2}";
-                listDetalleVenta.Items.Add(linea);
-            }
-        }
-
+        // ===============================
+        // 🔴 ELIMINAR PRODUCTO DEL CARRITO
+        // ===============================
         private void BtnEliminar_Click(object sender, EventArgs e)
         {
-            var listboxes = Controls.OfType<ListBox>().ToList();
-            if (listboxes.Count < 1 || listboxes[0].SelectedIndex < 0)
+            int index = listClave.SelectedIndex;
+
+            if (index < 0)
             {
-                MessageBox.Show("Selecciona una venta para eliminar.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Selecciona un producto para eliminar.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
-            string idVentaSeleccionada = listboxes[0].SelectedItem?.ToString() ?? string.Empty;
-
-            if (string.IsNullOrEmpty(idVentaSeleccionada))
-                return;
 
             try
             {
-                if (!File.Exists(rutaArchivo))
-                    return;
-
-                List<string> registros = new List<string>();
-                bool encontrado = false;
-
-                using (StreamReader arch = new StreamReader(rutaArchivo))
+                // Restar del total
+                if (decimal.TryParse(list_import.Items[index].ToString(), out decimal importe))
                 {
-                    string linea;
-                    while ((linea = arch.ReadLine()) != null)
-                    {
-                        if (string.IsNullOrWhiteSpace(linea))
-                            continue;
-
-                        string[] datos = linea.Split(',');
-                        if (datos.Length >= 1 && datos[0] != idVentaSeleccionada)
-                        {
-                            registros.Add(linea);
-                        }
-                        else if (datos.Length >= 1 && datos[0] == idVentaSeleccionada)
-                        {
-                            encontrado = true;
-                        }
-                    }
+                    totalVenta -= importe;
                 }
 
-                if (encontrado)
-                {
-                    using (StreamWriter arch = new StreamWriter(rutaArchivo, false))
-                    {
-                        foreach (string reg in registros)
-                            arch.WriteLine(reg);
-                    }
+                // Eliminar de todos los ListBox
+                listClave.Items.RemoveAt(index);
+                listDescripcion.Items.RemoveAt(index);
+                listUnidades.Items.RemoveAt(index);
+                listPrecio.Items.RemoveAt(index);
+                list_import.Items.RemoveAt(index);
 
-                    MessageBox.Show("Venta eliminada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    CargarVentas();
-                }
+                ActualizarTotal();
+                MessageBox.Show("Producto eliminado del carrito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al eliminar venta: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void LimpiarCamposVenta()
-        {
-            var textboxes = Controls.OfType<TextBox>().ToList();
-            foreach (var tb in textboxes)
-                tb.Clear();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            BtnRegistrar_Click(sender, e);
-        }
-
-        private void label6_Click(object sender, EventArgs e)
-        {
-
-        }
-
+        // ===============================
+        // 🧾 REGISTRAR / GENERAR FACTURA
+        // ===============================
         private void BtnRegistrar_Click(object sender, EventArgs e)
         {
-            var listboxes = Controls.OfType<ListBox>().ToList();
-
-            // Validar que haya artículos en la venta
-            if (listboxes.Count < 1 || listboxes[0].Items.Count == 0)
+            if (listClave.Items.Count == 0)
             {
-                MessageBox.Show("Debe agregar al menos un artículo a la venta.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("No hay productos en el carrito.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             try
             {
-                // Leer todas las ventas del listbox principal
-                decimal totalVenta = 0;
-                bool ventasValidas = true;
+                string fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                string factura = "╔════════════════════════════════╗\n";
+                factura += "║          FACTURA DE VENTA       ║\n";
+                factura += "╚════════════════════════════════╝\n";
+                factura += $"Fecha: {fecha}\n";
+                factura += $"Factura #: {DateTime.Now.Ticks}\n";
+                factura += "────────────────────────────────────\n";
+                factura += String.Format("{0,-10} {1,-15} {2,-8} {3,-10} {4,-12}\n", 
+                    "CLAVE", "DESCRIPCIÓN", "CANT", "PRECIO", "SUBTOTAL");
+                factura += "────────────────────────────────────\n";
 
-                for (int i = 0; i < listboxes[0].Items.Count; i++)
+                int totalArticulos = 0;
+                decimal totalFinal = 0;
+
+                for (int i = 0; i < listClave.Items.Count; i++)
                 {
-                    string idVenta = listboxes[0].Items[i]?.ToString() ?? string.Empty;
-                    string descripcion = listboxes[1].Items.Count > i ? listboxes[1].Items[i]?.ToString() ?? string.Empty : string.Empty;
-                    string cantidadStr = listboxes[2].Items.Count > i ? listboxes[2].Items[i]?.ToString() ?? string.Empty : string.Empty;
-                    string precioStr = listboxes[3].Items.Count > i ? listboxes[3].Items[i]?.ToString() ?? string.Empty : string.Empty;
+                    string clave = listClave.Items[i].ToString();
+                    string desc = listDescripcion.Items[i].ToString();
+                    int cantidad = int.Parse(listUnidades.Items[i].ToString());
+                    decimal precio = decimal.Parse(listPrecio.Items[i].ToString());
+                    decimal subtotal = decimal.Parse(list_import.Items[i].ToString());
 
-                    if (decimal.TryParse(cantidadStr, out decimal cantidad) && decimal.TryParse(precioStr, out decimal precio))
-                    {
-                        totalVenta += cantidad * precio;
-                    }
-                    else
-                    {
-                        ventasValidas = false;
-                        break;
-                    }
+                    factura += String.Format("{0,-10} {1,-15} {2,-8} ${3,-9:F2} ${4,-10:F2}\n",
+                        clave, desc.Substring(0, Math.Min(15, desc.Length)), cantidad, precio, subtotal);
+
+                    totalArticulos += cantidad;
+                    totalFinal += subtotal;
                 }
 
-                if (!ventasValidas)
-                {
-                    MessageBox.Show("Algunos datos de la venta no son válidos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
+                factura += "────────────────────────────────────\n";
+                factura += $"Total Artículos: {totalArticulos}\n";
+                factura += $"TOTAL A PAGAR:   ${totalFinal:F2}\n";
+                factura += "════════════════════════════════════\n\n";
 
-                // Actualizar el total en el textBox5
-                var textbox5 = Controls.OfType<TextBox>().FirstOrDefault(t => t.Name == "textBox5");
-                if (textbox5 != null)
-                    textbox5.Text = totalVenta.ToString("F2");
+                // Guardar en archivo
+                File.AppendAllText(rutaFacturas, factura);
 
-                // Agregar el importe total al list_import
-                if (listboxes.Count > 4)
-                {
-                    listboxes[4].Items.Add(totalVenta.ToString("F2"));
-                }
+                MessageBox.Show($"Factura generada correctamente.\n\nTotal: ${totalFinal:F2}", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // También agregar al txb_importe
-                var txbImporte = Controls.OfType<TextBox>().FirstOrDefault(t => t.Name == "txb_importe");
-                if (txbImporte != null)
-                    txbImporte.Text = totalVenta.ToString("F2");
-
-                MessageBox.Show($"Venta registrada correctamente.\nTotal: ${totalVenta:F2}\nArtículos: {listboxes[0].Items.Count}",
-                    "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                // Limpiar campos y detalle
-                LimpiarCamposVenta();
-                LimpiarDetalle();
-                CargarVentas();
+                LimpiarTodo();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al registrar venta: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error al registrar factura: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void LimpiarDetalle()
+        // ===============================
+        // 🔁 SINCRONIZAR LISTBOX
+        // ===============================
+        private void SincronizarListas(object sender, EventArgs e)
         {
-            var listDetalleVenta = Controls.OfType<ListBox>().FirstOrDefault(l => l.Name == "list_detalleventa");
-            if (listDetalleVenta != null)
-                listDetalleVenta.Items.Clear();
-        }
+            ListBox listaOrigen = (ListBox)sender;
+            int indice = listaOrigen.SelectedIndex;
 
-        private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string linea = "";
-            string elemento = "";
-            for (int i = 0; i < listDescripcion.Items.Count; i++) 
+            if (indice >= 0)
             {
-                elemento = listDescripcion.Items[i].ToString();
-                MessageBox.Show(elemento);
-            }
-
-        }
-
-        private void list_detalleventa_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnAgregar_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnEliminar_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox5_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void list_import_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void listBox4_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string linea = "";
-            string elemento = "";
-            for (int i = 0; i < listDescripcion.Items.Count; i++)
-            {
-                linea = listDescripcion.Items[i].ToString() + "," + listDescripcion.Items[i].ToString() + "," + listDescripcion.Items[i].ToString() + "," + listDescripcion.Items[i].ToString() + "," + listDescripcion.Items[i].ToString();
-                MessageBox.Show(linea);
+                listClave.SelectedIndex = indice;
+                listDescripcion.SelectedIndex = indice;
+                listUnidades.SelectedIndex = indice;
+                listPrecio.SelectedIndex = indice;
+                list_import.SelectedIndex = indice;
             }
         }
 
-        private void listBox3_SelectedIndexChanged(object sender, EventArgs e)
+        // ===============================
+        // 💰 ACTUALIZAR TOTAL
+        // ===============================
+        private void ActualizarTotal()
         {
-            string linea = "";
-            string elemento = "";
-            for (int i = 0; i < listDescripcion.Items.Count; i++)
-            {
-                elemento = listDescripcion.Items[i].ToString();
-                MessageBox.Show(elemento);
-            }
+            txb_importe.Text = totalVenta.ToString("F2");
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        // ===============================
+        // 🧹 LIMPIAR CAMPOS DE ENTRADA
+        // ===============================
+        private void LimpiarCampos()
         {
-            string linea = "";
-            string elemento = "";
-            for (int i = 0; i < listDescripcion.Items.Count; i++)
-            {
-                elemento = listDescripcion.Items[i].ToString();
-                MessageBox.Show(elemento);
-            }
+            txbclave.Clear();
+            txbdescripcion.Clear();
+            txbunidades.Clear();
+            txbprecio.Clear();
         }
 
-        private void txb_importe_TextChanged(object sender, EventArgs e)
+        // ===============================
+        // 🧹 LIMPIAR TODO (CARRITO)
+        // ===============================
+        private void LimpiarTodo()
         {
+            listClave.Items.Clear();
+            listDescripcion.Items.Clear();
+            listUnidades.Items.Clear();
+            listPrecio.Items.Clear();
+            list_import.Items.Clear();
 
-        }
+            LimpiarCampos();
+            totalVenta = 0;
+            ActualizarTotal();
 
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txbunidades_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txbclave_TextChanged(object sender, EventArgs e)
-        {
-
+            txbclave.Focus();
         }
     }
 }
