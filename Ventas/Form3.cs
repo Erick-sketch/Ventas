@@ -19,7 +19,7 @@ namespace Ventas
         public CatalogoArt()
         {
             InitializeComponent();
-            CargarArticulos();
+            
 
             
             btnAgregar.Click += BtnAgregar_Click;
@@ -73,15 +73,45 @@ namespace Ventas
                 return;
             }
 
+            if (!int.TryParse(textBox3.Text, out int existencias))
+            {
+                MessageBox.Show("Existencias inválidas.");
+                return;
+            }
+
+            if (existencias < 0)
+            {
+                MessageBox.Show("Las existencias no pueden ser negativas.");
+                return;
+            }
+
             if (!decimal.TryParse(textBox4.Text, out decimal costo))
             {
                 MessageBox.Show("Costo inválido.");
                 return;
             }
 
+            if (costo <= 0)
+            {
+                MessageBox.Show("El costo debe ser mayor que cero.");
+                return;
+            }
+
             if (!decimal.TryParse(textBox5.Text, out decimal precio))
             {
                 MessageBox.Show("Precio inválido.");
+                return;
+            }
+
+            if (precio < costo)
+            {
+                MessageBox.Show("El precio no puede ser menor al costo.");
+                return;
+            }
+
+            if (precio <= 0)
+            {
+                MessageBox.Show("El precio debe ser mayor que cero.");
                 return;
             }
 
@@ -93,12 +123,12 @@ namespace Ventas
 
             try
             {
-                string registro = $"{clave},{descripcion},{evidencias},{costo:F2},{precio:F2}";
+                string registro = $"{clave},{descripcion},{existencias},{costo:F2},{precio:F2}";
                 File.AppendAllText(rutaArchivo, registro + Environment.NewLine);
 
                 MessageBox.Show("Artículo agregado.");
                 LimpiarCampos();
-                CargarArticulos();
+                
             }
             catch (Exception ex)
             {
@@ -181,6 +211,18 @@ namespace Ventas
                 return;
             }
 
+            if (!int.TryParse(textBox3.Text, out int existencias))
+            {
+                MessageBox.Show("Existencias inválidas.");
+                return;
+            }
+
+            if (existencias < 0)
+            {
+                MessageBox.Show("Las existencias no pueden ser negativas.");
+                return;
+            }
+
             List<string> registros = new List<string>();
             bool encontrado = false;
 
@@ -202,7 +244,18 @@ namespace Ventas
                         return;
                     }
 
-                    string nuevaLinea = $"{textBox1.Text.Trim()},{textBox2.Text.Trim()},{textBox3.Text.Trim()},{costo:F2},{precio:F2}";
+                    if (precio < costo)
+                    {
+                        MessageBox.Show("El precio no puede ser menor al costo.");
+                        return;
+                    }
+
+                    string nuevaLinea =
+                        $"{textBox1.Text.Trim()}," +
+                        $"{textBox2.Text.Trim()}," +
+                        $"{existencias}," +
+                        $"{costo:F2}," +
+                        $"{precio:F2}";
                     registros.Add(nuevaLinea);
                     encontrado = true;
                 }
@@ -217,7 +270,7 @@ namespace Ventas
                 File.WriteAllLines(rutaArchivo, registros);
                 MessageBox.Show("Artículo actualizado correctamente.");
                 LimpiarCampos();
-                CargarArticulos();
+                
             }
             else
             {
@@ -268,7 +321,7 @@ namespace Ventas
                 File.WriteAllLines(rutaArchivo, registros);
                 MessageBox.Show("Artículo eliminado correctamente.");
                 LimpiarCampos();
-                CargarArticulos();
+                
             }
             else
             {

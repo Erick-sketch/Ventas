@@ -29,59 +29,66 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Administrativo));
-            btnPersona = new Button();
-            btnArt = new Button();
-            btnVentas = new Button();
+            pictbxPersonal = new PictureBox();
+            pictBxArticulo = new PictureBox();
+            pictBxVentas = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)pictbxPersonal).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictBxArticulo).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictBxVentas).BeginInit();
             SuspendLayout();
             // 
-            // btnPersona
+            // pictbxPersonal
             // 
-            btnPersona.BackgroundImage = (Image)resources.GetObject("btnPersona.BackgroundImage");
-            btnPersona.BackgroundImageLayout = ImageLayout.Stretch;
-            btnPersona.Location = new Point(12, 81);
-            btnPersona.Name = "btnPersona";
-            btnPersona.Size = new Size(310, 295);
-            btnPersona.TabIndex = 0;
-            btnPersona.UseVisualStyleBackColor = true;
-            btnPersona.Click += btnPersona_Click_1;
+            pictbxPersonal.Image = (Image)resources.GetObject("pictbxPersonal.Image");
+            pictbxPersonal.Location = new Point(12, 81);
+            pictbxPersonal.Name = "pictbxPersonal";
+            pictbxPersonal.Size = new Size(310, 295);
+            pictbxPersonal.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictbxPersonal.TabIndex = 3;
+            pictbxPersonal.TabStop = false;
+            pictbxPersonal.Click += pictureBox1_Click;
             // 
-            // btnArt
+            // pictBxArticulo
             // 
-            btnArt.BackgroundImage = (Image)resources.GetObject("btnArt.BackgroundImage");
-            btnArt.BackgroundImageLayout = ImageLayout.Stretch;
-            btnArt.Location = new Point(328, 81);
-            btnArt.Name = "btnArt";
-            btnArt.Size = new Size(310, 295);
-            btnArt.TabIndex = 1;
-            btnArt.UseVisualStyleBackColor = true;
+            pictBxArticulo.Image = (Image)resources.GetObject("pictBxArticulo.Image");
+            pictBxArticulo.Location = new Point(328, 81);
+            pictBxArticulo.Name = "pictBxArticulo";
+            pictBxArticulo.Size = new Size(310, 295);
+            pictBxArticulo.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictBxArticulo.TabIndex = 4;
+            pictBxArticulo.TabStop = false;
+            pictBxArticulo.Click += pictBxArticulo_Click;
             // 
-            // btnVentas
+            // pictBxVentas
             // 
-            btnVentas.BackgroundImage = (Image)resources.GetObject("btnVentas.BackgroundImage");
-            btnVentas.BackgroundImageLayout = ImageLayout.Stretch;
-            btnVentas.Location = new Point(644, 81);
-            btnVentas.Name = "btnVentas";
-            btnVentas.Size = new Size(310, 295);
-            btnVentas.TabIndex = 2;
-            btnVentas.UseVisualStyleBackColor = true;
+            pictBxVentas.Image = (Image)resources.GetObject("pictBxVentas.Image");
+            pictBxVentas.Location = new Point(650, 81);
+            pictBxVentas.Name = "pictBxVentas";
+            pictBxVentas.Size = new Size(310, 295);
+            pictBxVentas.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictBxVentas.TabIndex = 5;
+            pictBxVentas.TabStop = false;
+            pictBxVentas.Click += pictBxVentas_Click;
             // 
             // Administrativo
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(972, 450);
-            Controls.Add(btnVentas);
-            Controls.Add(btnArt);
-            Controls.Add(btnPersona);
+            Controls.Add(pictBxVentas);
+            Controls.Add(pictBxArticulo);
+            Controls.Add(pictbxPersonal);
             Name = "Administrativo";
             Text = "Administrativo";
+            ((System.ComponentModel.ISupportInitialize)pictbxPersonal).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictBxArticulo).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictBxVentas).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
-
-        private Button btnPersona;
-        private Button btnArt;
-        private Button btnVentas;
+        private PictureBox pictbxPersonal;
+        private PictureBox pictBxArticulo;
+        private PictureBox pictBxVentas;
     }
 }

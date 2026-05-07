@@ -123,7 +123,6 @@
             textBox5.Name = "textBox5";
             textBox5.Size = new Size(168, 23);
             textBox5.TabIndex = 15;
-            textBox5.TextChanged += textBox5_TextChanged;
             // 
             // label5
             // 

@@ -30,6 +30,7 @@ namespace Ventas
             txb_importe.ReadOnly = true;
             txb_importe.Text = "0.00";
             txbclave.KeyDown += TxbClave_KeyDown;
+            txbunidades.KeyDown += Txbunidades_KeyDown;
 
             btnAgregar.Click += BtnAgregar_Click;
             btnEliminar.Click += BtnEliminar_Click;
@@ -59,6 +60,29 @@ namespace Ventas
             }
         }
 
+        private void Txbunidades_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Tab)
+            {
+                e.Handled = true;
+                CalcularImporte();
+            }
+        }
+
+        private void CalcularImporte()
+        {
+            if (int.TryParse(txbunidades.Text, out int cantidad) &&
+                decimal.TryParse(txbprecio.Text, out decimal precio))
+            {
+                decimal importe = cantidad * precio;
+
+                txb_importe.Text = importe.ToString("F2");
+            }
+            else
+            {
+                txb_importe.Clear();
+            }
+        }
 
         private void BuscarArticulo()
         {
@@ -216,11 +240,27 @@ namespace Ventas
                 listUnidades.Items.Add(cant);
                 listPrecio.Items.Add(pre.ToString("F2"));
 
-                decimal importe = cant * pre;
+                decimal importe;
+
+                if (!decimal.TryParse(txb_importe.Text, out importe))
+                {
+                    MessageBox.Show("Importe inválido.");
+                    return;
+                }
+
                 list_import.Items.Add(importe.ToString("F2"));
                 totalVenta += importe;
                 textBox5.Text = totalVenta.ToString("F2");
                 ActualizarExistencias(clave, cant);
+
+                string detalle = clave + " - " +
+                 descripcion + " - " +
+                 cant + " x $" +
+                 pre.ToString("F2") +
+                 " = $" +
+                 importe.ToString("F2");
+
+                list_detalleventa.Items.Add(detalle);
 
                 LimpiarCampos();
                 txbclave.Focus();
@@ -251,6 +291,7 @@ namespace Ventas
                 {
                     totalVenta -= importe;
                     textBox5.Text = totalVenta.ToString("F2");
+                    txb_importe.Clear();
                 }
 
 
@@ -259,6 +300,7 @@ namespace Ventas
                 listUnidades.Items.RemoveAt(index);
                 listPrecio.Items.RemoveAt(index);
                 list_import.Items.RemoveAt(index);
+                list_detalleventa.Items.RemoveAt(index);
 
                 ActualizarTotal();
                 MessageBox.Show("Producto eliminado del carrito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -399,7 +441,7 @@ namespace Ventas
 
         private void ActualizarTotal()
         {
-            txb_importe.Text = totalVenta.ToString("F2");
+            textBox5.Text = totalVenta.ToString("F2");
         }
 
 
@@ -409,6 +451,7 @@ namespace Ventas
             txbdescripcion.Clear();
             txbunidades.Clear();
             txbprecio.Clear();
+            txb_importe.Clear();
         }
 
 
@@ -419,6 +462,7 @@ namespace Ventas
             listUnidades.Items.Clear();
             listPrecio.Items.Clear();
             list_import.Items.Clear();
+            list_detalleventa.Items.Clear();
 
             LimpiarCampos();
             totalVenta = 0;

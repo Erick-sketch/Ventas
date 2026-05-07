@@ -13,6 +13,7 @@
     {
         private readonly string rutaArchivo = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "VentasPersonal.txt");
         valida_txt vtxt = new valida_txt();
+        private string nombreUsuario = "";
 
         public Form5()
         {
@@ -36,8 +37,7 @@
 
             if (!string.IsNullOrEmpty(cargo))
             {
-                MessageBox.Show("Bienvenido " + clave, "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                MessageBox.Show("Bienvenido " + nombreUsuario, "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.Hide();
 
                 if (cargo.ToLower() == "administrador")
@@ -91,10 +91,11 @@
                             string claveArchivo = datos[0].Trim();
                             string contraseñaArchivo = datos[2].Trim();
                             string cargoArchivo = datos[3].Trim();
-
+                            string nombreArchivo = datos[1].Trim();
                             // Comparación exacta (case-sensitive)
                             if (claveArchivo == clave && contraseñaArchivo == contraseña)
                             {
+                                nombreUsuario = nombreArchivo;
                                 return cargoArchivo;
                             }
                         }
