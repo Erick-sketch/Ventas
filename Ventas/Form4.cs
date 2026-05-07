@@ -27,25 +27,95 @@ namespace Ventas
         {
             InitializeComponent();
 
-            // Conectar eventos de botones
+            txb_importe.ReadOnly = true;
+            txb_importe.Text = "0.00";
+            txbclave.KeyDown += TxbClave_KeyDown;
+
             btnAgregar.Click += BtnAgregar_Click;
             btnEliminar.Click += BtnEliminar_Click;
             btnRegistar.Click += BtnRegistrar_Click;
 
-            // Evento para sincronizar ListBox
+
             listClave.SelectedIndexChanged += SincronizarListas;
             listDescripcion.SelectedIndexChanged += SincronizarListas;
             listUnidades.SelectedIndexChanged += SincronizarListas;
             listPrecio.SelectedIndexChanged += SincronizarListas;
             list_import.SelectedIndexChanged += SincronizarListas;
 
-            // Cargar catálogo de productos
+
+            txbdescripcion.ReadOnly = true;
+            txbprecio.ReadOnly = true;
+
             CargarCatalogoProductos();
         }
 
-        // ===============================
-        // 📦 CARGAR CATÁLOGO DE PRODUCTOS
-        // ===============================
+
+        private void TxbClave_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Return)
+            {
+                e.Handled = true;
+                BuscarArticulo();
+            }
+        }
+
+
+        private void BuscarArticulo()
+        {
+            string clave = txbclave.Text.Trim();
+
+            if (string.IsNullOrEmpty(clave))
+            {
+                MessageBox.Show("Ingresa una clave de artículo.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txbclave.Focus();
+                return;
+            }
+
+            if (!File.Exists(rutaArticulos))
+            {
+                MessageBox.Show("El archivo de artículos no existe.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            try
+            {
+                bool encontrado = false;
+
+                foreach (var linea in File.ReadAllLines(rutaArticulos))
+                {
+                    if (string.IsNullOrWhiteSpace(linea))
+                        continue;
+
+                    string[] datos = linea.Split(',');
+
+                    if (datos.Length >= 5 && datos[0].Trim() == clave)
+                    {
+
+                        txbdescripcion.Text = datos[1].Trim();
+                        txbprecio.Text = datos[4].Trim();
+                        txbunidades.Focus();
+
+                        encontrado = true;
+                        break;
+                    }
+                }
+
+                if (!encontrado)
+                {
+                    MessageBox.Show("Artículo no encontrado.", "Búsqueda", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    txbdescripcion.Clear();
+                    txbprecio.Clear();
+                    txbclave.Clear();
+                    txbclave.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al buscar artículo: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
         private void CargarCatalogoProductos()
         {
             try
@@ -66,7 +136,7 @@ namespace Ventas
 
                     string[] datos = linea.Split(',');
 
-                    // Formato: Clave,Descripción,Existencias,Costo,Precio
+
                     if (datos.Length >= 5)
                     {
                         string clave = datos[0].Trim();
@@ -85,9 +155,7 @@ namespace Ventas
             }
         }
 
-        // ===============================
-        // 📝 CREAR ARCHIVO EJEMPLO
-        // ===============================
+
         private void CrearArchivoEjemplo()
         {
             try
@@ -110,9 +178,7 @@ namespace Ventas
             }
         }
 
-        // ===============================
-        // 🟢 AGREGAR PRODUCTO (CARRITO)
-        // ===============================
+
         private void BtnAgregar_Click(object sender, EventArgs e)
         {
             string clave = txbclave.Text.Trim();
@@ -120,15 +186,16 @@ namespace Ventas
             string unidades = txbunidades.Text.Trim();
             string precio = txbprecio.Text.Trim();
 
-            // Validación básica
-            if (string.IsNullOrEmpty(clave) || string.IsNullOrEmpty(descripcion) || 
+
+            if (string.IsNullOrEmpty(clave) || string.IsNullOrEmpty(descripcion) ||
                 string.IsNullOrEmpty(unidades) || string.IsNullOrEmpty(precio))
             {
-                MessageBox.Show("Completa todos los campos.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Completa todos los campos. Ingresa la clave y presiona Enter.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // Validar que sean números
+
             if (!int.TryParse(unidades, out int cant) || !decimal.TryParse(precio, out decimal pre))
             {
                 MessageBox.Show("Unidades o precio inválido.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -143,7 +210,7 @@ namespace Ventas
 
             try
             {
-                // Agregar a los ListBox
+
                 listClave.Items.Add(clave);
                 listDescripcion.Items.Add(descripcion);
                 listUnidades.Items.Add(cant);
@@ -151,12 +218,10 @@ namespace Ventas
 
                 decimal importe = cant * pre;
                 list_import.Items.Add(importe.ToString("F2"));
-
-                // Actualizar total
                 totalVenta += importe;
-                ActualizarTotal();
+                textBox5.Text = totalVenta.ToString("F2");
+                ActualizarExistencias(clave, cant);
 
-                // Limpiar campos
                 LimpiarCampos();
                 txbclave.Focus();
 
@@ -168,9 +233,7 @@ namespace Ventas
             }
         }
 
-        // ===============================
-        // 🔴 ELIMINAR PRODUCTO DEL CARRITO
-        // ===============================
+
         private void BtnEliminar_Click(object sender, EventArgs e)
         {
             int index = listClave.SelectedIndex;
@@ -183,13 +246,14 @@ namespace Ventas
 
             try
             {
-                // Restar del total
+
                 if (decimal.TryParse(list_import.Items[index].ToString(), out decimal importe))
                 {
                     totalVenta -= importe;
+                    textBox5.Text = totalVenta.ToString("F2");
                 }
 
-                // Eliminar de todos los ListBox
+
                 listClave.Items.RemoveAt(index);
                 listDescripcion.Items.RemoveAt(index);
                 listUnidades.Items.RemoveAt(index);
@@ -205,9 +269,7 @@ namespace Ventas
             }
         }
 
-        // ===============================
-        // 🧾 REGISTRAR / GENERAR FACTURA
-        // ===============================
+
         private void BtnRegistrar_Click(object sender, EventArgs e)
         {
             if (listClave.Items.Count == 0)
@@ -225,7 +287,7 @@ namespace Ventas
                 factura += $"Fecha: {fecha}\n";
                 factura += $"Factura #: {DateTime.Now.Ticks}\n";
                 factura += "────────────────────────────────────\n";
-                factura += String.Format("{0,-10} {1,-15} {2,-8} {3,-10} {4,-12}\n", 
+                factura += String.Format("{0,-10} {1,-15} {2,-8} {3,-10} {4,-12}\n",
                     "CLAVE", "DESCRIPCIÓN", "CANT", "PRECIO", "SUBTOTAL");
                 factura += "────────────────────────────────────\n";
 
@@ -252,7 +314,7 @@ namespace Ventas
                 factura += $"TOTAL A PAGAR:   ${totalFinal:F2}\n";
                 factura += "════════════════════════════════════\n\n";
 
-                // Guardar en archivo
+
                 File.AppendAllText(rutaFacturas, factura);
 
                 MessageBox.Show($"Factura generada correctamente.\n\nTotal: ${totalFinal:F2}", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -265,9 +327,60 @@ namespace Ventas
             }
         }
 
-        // ===============================
-        // 🔁 SINCRONIZAR LISTBOX
-        // ===============================
+        private void ActualizarExistencias(string claveBuscada, int cantidadVendida)
+        {
+            try
+            {
+                List<string> lineasActualizadas = new List<string>();
+
+                foreach (string linea in File.ReadAllLines(rutaArticulos))
+                {
+                    if (string.IsNullOrWhiteSpace(linea))
+                        continue;
+
+                    string[] datos = linea.Split(',');
+
+                    if (datos.Length >= 5)
+                    {
+                        string clave = datos[0].Trim();
+
+                        if (clave == claveBuscada)
+                        {
+                            int existenciaActual = int.Parse(datos[2]);
+
+                            if (existenciaActual < cantidadVendida)
+                            {
+                                MessageBox.Show(
+                                    "No hay suficientes existencias.",
+                                    "Stock insuficiente",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Warning);
+
+                                return;
+                            }
+
+                            int nuevaExistencia = existenciaActual - cantidadVendida;
+
+                            datos[2] = nuevaExistencia.ToString();
+                        }
+
+                        lineasActualizadas.Add(string.Join(",", datos));
+                    }
+                }
+
+                File.WriteAllLines(rutaArticulos, lineasActualizadas);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Error al actualizar existencias: " + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+
         private void SincronizarListas(object sender, EventArgs e)
         {
             ListBox listaOrigen = (ListBox)sender;
@@ -283,17 +396,13 @@ namespace Ventas
             }
         }
 
-        // ===============================
-        // 💰 ACTUALIZAR TOTAL
-        // ===============================
+
         private void ActualizarTotal()
         {
             txb_importe.Text = totalVenta.ToString("F2");
         }
 
-        // ===============================
-        // 🧹 LIMPIAR CAMPOS DE ENTRADA
-        // ===============================
+
         private void LimpiarCampos()
         {
             txbclave.Clear();
@@ -302,9 +411,7 @@ namespace Ventas
             txbprecio.Clear();
         }
 
-        // ===============================
-        // 🧹 LIMPIAR TODO (CARRITO)
-        // ===============================
+
         private void LimpiarTodo()
         {
             listClave.Items.Clear();
@@ -318,6 +425,11 @@ namespace Ventas
             ActualizarTotal();
 
             txbclave.Focus();
+        }
+
+        private void textBox5_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

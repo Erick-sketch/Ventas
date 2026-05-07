@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Administrativo));
             btnPersona = new Button();
             btnArt = new Button();
             btnVentas = new Button();
@@ -35,37 +36,40 @@
             // 
             // btnPersona
             // 
-            btnPersona.Location = new Point(27, 72);
+            btnPersona.BackgroundImage = (Image)resources.GetObject("btnPersona.BackgroundImage");
+            btnPersona.BackgroundImageLayout = ImageLayout.Stretch;
+            btnPersona.Location = new Point(12, 81);
             btnPersona.Name = "btnPersona";
-            btnPersona.Size = new Size(250, 313);
+            btnPersona.Size = new Size(310, 295);
             btnPersona.TabIndex = 0;
-            btnPersona.Text = "Personal";
             btnPersona.UseVisualStyleBackColor = true;
             btnPersona.Click += btnPersona_Click_1;
             // 
             // btnArt
             // 
-            btnArt.Location = new Point(328, 72);
+            btnArt.BackgroundImage = (Image)resources.GetObject("btnArt.BackgroundImage");
+            btnArt.BackgroundImageLayout = ImageLayout.Stretch;
+            btnArt.Location = new Point(328, 81);
             btnArt.Name = "btnArt";
-            btnArt.Size = new Size(250, 313);
+            btnArt.Size = new Size(310, 295);
             btnArt.TabIndex = 1;
-            btnArt.Text = "Articulos";
             btnArt.UseVisualStyleBackColor = true;
             // 
             // btnVentas
             // 
-            btnVentas.Location = new Point(623, 72);
+            btnVentas.BackgroundImage = (Image)resources.GetObject("btnVentas.BackgroundImage");
+            btnVentas.BackgroundImageLayout = ImageLayout.Stretch;
+            btnVentas.Location = new Point(644, 81);
             btnVentas.Name = "btnVentas";
-            btnVentas.Size = new Size(250, 313);
+            btnVentas.Size = new Size(310, 295);
             btnVentas.TabIndex = 2;
-            btnVentas.Text = "Ventas";
             btnVentas.UseVisualStyleBackColor = true;
             // 
             // Administrativo
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(906, 450);
+            ClientSize = new Size(972, 450);
             Controls.Add(btnVentas);
             Controls.Add(btnArt);
             Controls.Add(btnPersona);

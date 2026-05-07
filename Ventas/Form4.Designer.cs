@@ -83,7 +83,6 @@
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Detalle de Venta";
-
             // 
             // btnRegistar
             // 
@@ -93,7 +92,6 @@
             btnRegistar.TabIndex = 19;
             btnRegistar.Text = "Registrar Venta";
             btnRegistar.UseVisualStyleBackColor = true;
-
             // 
             // list_import
             // 
@@ -102,7 +100,6 @@
             list_import.Name = "list_import";
             list_import.Size = new Size(124, 184);
             list_import.TabIndex = 18;
-
             // 
             // txb_importe
             // 
@@ -110,7 +107,6 @@
             txb_importe.Name = "txb_importe";
             txb_importe.Size = new Size(124, 23);
             txb_importe.TabIndex = 17;
-
             // 
             // label6
             // 
@@ -120,7 +116,6 @@
             label6.Size = new Size(49, 15);
             label6.TabIndex = 16;
             label6.Text = "Importe";
-
             // 
             // textBox5
             // 
@@ -128,7 +123,7 @@
             textBox5.Name = "textBox5";
             textBox5.Size = new Size(168, 23);
             textBox5.TabIndex = 15;
-
+            textBox5.TextChanged += textBox5_TextChanged;
             // 
             // label5
             // 
@@ -147,7 +142,6 @@
             btnEliminar.TabIndex = 13;
             btnEliminar.Text = "Eliminar de la Venta ";
             btnEliminar.UseVisualStyleBackColor = true;
-
             // 
             // btnAgregar
             // 
@@ -157,7 +151,6 @@
             btnAgregar.TabIndex = 12;
             btnAgregar.Text = "Agregar a Venta";
             btnAgregar.UseVisualStyleBackColor = true;
-
             // 
             // listPrecio
             // 
@@ -166,7 +159,6 @@
             listPrecio.Name = "listPrecio";
             listPrecio.Size = new Size(120, 184);
             listPrecio.TabIndex = 11;
-
             // 
             // listUnidades
             // 
@@ -175,7 +167,6 @@
             listUnidades.Name = "listUnidades";
             listUnidades.Size = new Size(135, 184);
             listUnidades.TabIndex = 10;
-
             // 
             // listDescripcion
             // 
@@ -184,7 +175,6 @@
             listDescripcion.Name = "listDescripcion";
             listDescripcion.Size = new Size(315, 184);
             listDescripcion.TabIndex = 9;
-
             // 
             // listClave
             // 
@@ -193,7 +183,6 @@
             listClave.Name = "listClave";
             listClave.Size = new Size(120, 184);
             listClave.TabIndex = 8;
-
             // 
             // txbprecio
             // 
@@ -201,7 +190,6 @@
             txbprecio.Name = "txbprecio";
             txbprecio.Size = new Size(120, 23);
             txbprecio.TabIndex = 7;
-
             // 
             // txbunidades
             // 
@@ -209,7 +197,6 @@
             txbunidades.Name = "txbunidades";
             txbunidades.Size = new Size(135, 23);
             txbunidades.TabIndex = 6;
-
             // 
             // txbdescripcion
             // 
@@ -217,7 +204,6 @@
             txbdescripcion.Name = "txbdescripcion";
             txbdescripcion.Size = new Size(315, 23);
             txbdescripcion.TabIndex = 5;
-
             // 
             // txbclave
             // 
@@ -225,7 +211,6 @@
             txbclave.Name = "txbclave";
             txbclave.Size = new Size(120, 23);
             txbclave.TabIndex = 4;
-
             // 
             // label4
             // 
@@ -253,7 +238,6 @@
             label2.Size = new Size(69, 15);
             label2.TabIndex = 1;
             label2.Text = "Descripcion";
-
             // 
             // label1
             // 
@@ -281,7 +265,6 @@
             list_detalleventa.Name = "list_detalleventa";
             list_detalleventa.Size = new Size(962, 169);
             list_detalleventa.TabIndex = 0;
-
             // 
             // FormVentas
             // 

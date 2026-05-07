@@ -23,44 +23,65 @@ namespace Ventas
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            bool v = vtxt.validaCampos(textBox1.Text, txtPSW.Text, textBox2.Text, comboBox1.Text, textBox4.Text);
-            if (v)
+            // Validar todos los campos con reglas de seguridad
+            if (vtxt.validaCampos(textBox1.Text, txtPSW.Text, textBox2.Text, comboBox1.Text, textBox4.Text))
             {
                 try
                 {
+                    // Verificar que la clave no exista ya
+                    if (VerificarClaveExistente(textBox1.Text.Trim()))
+                    {
+                        MessageBox.Show("La clave ya existe en el sistema.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
                     using (StreamWriter arch = new StreamWriter(rutaArchivo, true))
                     {
-                        string registro = textBox1.Text + "," + textBox2.Text + "," + txtPSW.Text + "," + comboBox1.Text + "," + textBox4.Text;
+                        string registro = textBox1.Text.Trim() + "," + textBox2.Text.Trim() + "," + txtPSW.Text.Trim() + "," + comboBox1.Text.Trim() + "," + textBox4.Text.Trim();
                         arch.WriteLine(registro);
                     }
-                    MessageBox.Show("Registro agregado correctamente.");
+                    MessageBox.Show("Registro agregado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LimpiarCampos();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error al escribir en el archivo: " + ex.Message);
+                    MessageBox.Show("Error al escribir en el archivo: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            else
+        }
+
+        private bool VerificarClaveExistente(string clave)
+        {
+            if (!File.Exists(rutaArchivo))
+                return false;
+
+            try
             {
-                MessageBox.Show("La clave no puede estar vacía.");
+                using (StreamReader arch = new StreamReader(rutaArchivo))
+                {
+                    while ((linea = arch.ReadLine()) != null)
+                    {
+                        string[] datos = linea.Split(',');
+                        if (datos.Length > 0 && datos[0].Trim() == clave)
+                            return true;
+                    }
+                }
             }
+            catch { }
+            return false;
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
             string claveBuscar = textBox1.Text.Trim();
 
-            if (claveBuscar == "")
-            {
-                MessageBox.Show("Ingresa una clave para buscar.");
+            // Validar la búsqueda
+            if (!vtxt.ValidarBusqueda(claveBuscar))
                 return;
-            }
-
 
             if (!File.Exists(rutaArchivo))
             {
-                MessageBox.Show("No existe el archivo de datos.");
+                MessageBox.Show("No existe el archivo de datos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -74,15 +95,14 @@ namespace Ventas
                     {
                         string[] datos = linea.Split(',');
 
-                        if (datos.Length > 0 && datos[0] == claveBuscar)
+                        if (datos.Length > 0 && datos[0].Trim() == claveBuscar)
                         {
-                            textBox2.Text = datos.Length > 1 ? datos[1] : string.Empty;
-                            txtPSW.Text = datos.Length > 2 ? datos[2] : string.Empty;
-                            comboBox1.Text = datos.Length > 3 ? datos[3] : string.Empty;
-                            textBox4.Text = datos.Length > 4 ? datos[4] : string.Empty;
+                            textBox2.Text = datos.Length > 1 ? datos[1].Trim() : string.Empty;
+                            txtPSW.Text = datos.Length > 2 ? datos[2].Trim() : string.Empty;
+                            comboBox1.Text = datos.Length > 3 ? datos[3].Trim() : string.Empty;
+                            textBox4.Text = datos.Length > 4 ? datos[4].Trim() : string.Empty;
                             encontrado = true;
 
-                            // Mostrar MessageBox con todos los datos
                             string mensaje = $"Datos del Personal\n\n" +
                                            $"Clave: {datos[0].Trim()}\n" +
                                            $"Nombre: {(datos.Length > 1 ? datos[1].Trim() : "N/A")}\n" +
@@ -97,11 +117,11 @@ namespace Ventas
                 }
 
                 if (!encontrado)
-                    MessageBox.Show("No se encontró ningún registro con esa clave.");
+                    MessageBox.Show("No se encontró ningún registro con esa clave.", "Resultado", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al leer el archivo: " + ex.Message);
+                MessageBox.Show("Error al leer el archivo: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -109,15 +129,17 @@ namespace Ventas
         {
             string claveBuscar = textBox1.Text.Trim();
 
-            if (claveBuscar == "")
-            {
-                MessageBox.Show("Ingresa la clave del registro a actualizar.");
+            // Validar búsqueda
+            if (!vtxt.ValidarBusqueda(claveBuscar))
                 return;
-            }
+
+            // Validar datos a actualizar
+            if (!vtxt.validaCampos(textBox1.Text, txtPSW.Text, textBox2.Text, comboBox1.Text, textBox4.Text))
+                return;
 
             if (!File.Exists(rutaArchivo))
             {
-                MessageBox.Show("No existe el archivo de datos.");
+                MessageBox.Show("No existe el archivo de datos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -134,7 +156,7 @@ namespace Ventas
 
                         if (datos.Length > 0 && datos[0] == claveBuscar)
                         {
-                            linea = textBox1.Text + "," + textBox2.Text + "," + txtPSW.Text + "," + comboBox1.Text + "," + textBox4.Text;
+                            linea = textBox1.Text.Trim() + "," + textBox2.Text.Trim() + "," + txtPSW.Text.Trim() + "," + comboBox1.Text.Trim() + "," + textBox4.Text.Trim();
                             encontrado = true;
                         }
 
@@ -150,17 +172,17 @@ namespace Ventas
                             archW.WriteLine(reg);
                     }
 
-                    MessageBox.Show("Registro actualizado correctamente.");
+                    MessageBox.Show("Registro actualizado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LimpiarCampos();
                 }
                 else
                 {
-                    MessageBox.Show("No se encontró ningún registro con esa clave.");
+                    MessageBox.Show("No se encontró ningún registro con esa clave.", "Resultado", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al actualizar el archivo: " + ex.Message);
+                MessageBox.Show("Error al actualizar el archivo: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -168,17 +190,22 @@ namespace Ventas
         {
             string claveBuscar = textBox1.Text.Trim();
 
-            if (claveBuscar == "")
-            {
-                MessageBox.Show("Ingresa la clave del registro a eliminar.");
+            // Validar búsqueda
+            if (!vtxt.ValidarBusqueda(claveBuscar))
                 return;
-            }
 
             if (!File.Exists(rutaArchivo))
             {
-                MessageBox.Show("No existe el archivo de datos.");
+                MessageBox.Show("No existe el archivo de datos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
+            // Confirmación antes de eliminar
+            DialogResult resultado = MessageBox.Show("¿Está seguro de que desea eliminar este registro? Esta acción no se puede deshacer.", 
+                "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (resultado != DialogResult.Yes)
+                return;
 
             bool encontrado = false;
             List<string> registros = new List<string>();
@@ -191,7 +218,7 @@ namespace Ventas
                     {
                         string[] datos = linea.Split(',');
 
-                        if (datos.Length > 0 && datos[0] == claveBuscar)
+                        if (datos.Length > 0 && datos[0].Trim() == claveBuscar)
                         {
                             encontrado = true;
                         }
@@ -210,17 +237,17 @@ namespace Ventas
                             archW.WriteLine(reg);
                     }
 
-                    MessageBox.Show("Registro eliminado correctamente.");
+                    MessageBox.Show("Registro eliminado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LimpiarCampos();
                 }
                 else
                 {
-                    MessageBox.Show("No se encontró ningún registro con esa clave.");
+                    MessageBox.Show("No se encontró ningún registro con esa clave.", "Resultado", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al eliminar el registro: " + ex.Message);
+                MessageBox.Show("Error al eliminar el registro: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -256,7 +283,8 @@ namespace Ventas
 
         private void button2_Click(object sender, EventArgs e)
         {
-            btnSearch_Click(sender, e);
+            // Este método ya está vinculado a btnSearch_Click en el constructor
+            // No es necesario llamarlo nuevamente aquí
         }
 
         private void BtnLimpiarDuplicados_Click(object sender, EventArgs e)
@@ -275,7 +303,7 @@ namespace Ventas
                 HashSet<string> clavesVistas = new HashSet<string>();
                 int duplicadosEliminados = 0;
 
-                // Leer archivo y filtrar duplicados
+               
                 using (StreamReader arch = new StreamReader(rutaArchivo))
                 {
                     string linea;
@@ -290,7 +318,7 @@ namespace Ventas
                         {
                             string clave = datos[0].Trim();
 
-                            // Si la clave no ha sido vista, la agregamos
+                            
                             if (!clavesVistas.Contains(clave))
                             {
                                 registros.Add(linea);
@@ -298,14 +326,14 @@ namespace Ventas
                             }
                             else
                             {
-                                // Es un duplicado, lo contamos pero no lo agregamos
+                                
                                 duplicadosEliminados++;
                             }
                         }
                     }
                 }
 
-                // Si hay duplicados, reescribir el archivo
+                
                 if (duplicadosEliminados > 0)
                 {
                     using (StreamWriter archW = new StreamWriter(rutaArchivo, false))
@@ -332,21 +360,149 @@ namespace Ventas
 
     class valida_txt()
     {
+        /// <summary>
+        /// Valida que un ID no esté vacío
+        /// </summary>
         public bool validaID(string id)
         {
-            if(id != "")
-                return true;
-            else
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                MessageBox.Show("El ID no puede estar vacío.", "Error de Validación", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
+            }
+            return true;
         }
 
-        public bool validaCampos(string clave,string nombre, string psw, string cargo, string salario)
+        /// <summary>
+        /// Valida que un valor sea numérico
+        /// </summary>
+        private bool ValidarNumerico(string valor, string nombreCampo)
         {
-            if (clave != "" && nombre != "" && psw != "" && cargo != "" && salario != "")
-                return true;
-            else
-               MessageBox.Show("Todos los campos deben ser llenados.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            return false;
+            if (!decimal.TryParse(valor, out _))
+            {
+                MessageBox.Show($"El campo '{nombreCampo}' debe contener solo números.", "Error de Validación", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Valida que un valor contenga solo letras y espacios
+        /// </summary>
+        private bool ValidarSoloLetras(string valor, string nombreCampo)
+        {
+            System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(@"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$");
+            if (!regex.IsMatch(valor))
+            {
+                MessageBox.Show($"El campo '{nombreCampo}' solo puede contener letras.", 
+                    "Error de Validación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Valida que un valor no esté vacío
+        /// </summary>
+        private bool ValidarNoVacio(string valor, string nombreCampo)
+        {
+            if (string.IsNullOrWhiteSpace(valor))
+            {
+                MessageBox.Show($"El campo '{nombreCampo}' no puede estar vacío.", "Validación", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Valida una contraseña con requisitos de seguridad
+        /// Requisitos: mínimo 6 caracteres, al menos 1 número
+        /// </summary>
+        private bool ValidarContraseña(string contraseña, string nombreCampo)
+        {
+            if (!ValidarNoVacio(contraseña, nombreCampo)) return false;
+            if (contraseña.Length < 6)
+            {
+                MessageBox.Show($"El campo '{nombreCampo}' debe tener al menos 6 caracteres.", 
+                    "Error de Validación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(@"\d");
+            if (!regex.IsMatch(contraseña))
+            {
+                MessageBox.Show($"El campo '{nombreCampo}' debe contener al menos un número.", 
+                    "Error de Validación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Valida que un rango de números esté dentro de límites
+        /// </summary>
+        private bool ValidarRango(decimal valor, decimal minimo, decimal maximo, string nombreCampo)
+        {
+            if (valor < minimo || valor > maximo)
+            {
+                MessageBox.Show($"El campo '{nombreCampo}' debe estar entre {minimo} y {maximo}.", 
+                    "Error de Validación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Valida todos los campos del formulario de Personal
+        /// Parámetros: clave, contraseña, nombre, cargo, salario
+        /// </summary>
+        public bool validaCampos(string clave, string contraseña, string nombre, string cargo, string salario)
+        {
+            // Validar Clave (solo números, 3-5 dígitos)
+            if (!ValidarNoVacio(clave, "Clave")) return false;
+            if (!ValidarNumerico(clave, "Clave")) return false;
+            if (clave.Length < 3 || clave.Length > 5)
+            {
+                MessageBox.Show("La clave debe tener entre 3 y 5 dígitos.", "Error de Validación", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            // Validar Nombre (solo letras y espacios)
+            if (!ValidarNoVacio(nombre, "Nombre")) return false;
+            if (!ValidarSoloLetras(nombre, "Nombre")) return false;
+            if (nombre.Length < 3)
+            {
+                MessageBox.Show("El nombre debe tener al menos 3 caracteres.", "Error de Validación", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            // Validar Contraseña (seguridad: mín 6 caracteres, debe tener números)
+            if (!ValidarContraseña(contraseña, "Contraseña")) return false;
+
+            // Validar Cargo (no vacío)
+            if (!ValidarNoVacio(cargo, "Cargo")) return false;
+
+            // Validar Salario (numérico, mayor a 0)
+            if (!ValidarNoVacio(salario, "Salario")) return false;
+            if (!ValidarNumerico(salario, "Salario")) return false;
+            if (!decimal.TryParse(salario, out decimal salarioDecimal))
+                return false;
+            if (!ValidarRango(salarioDecimal, 0.01m, 999999.99m, "Salario")) return false;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Valida campos para búsqueda (solo clave requerida)
+        /// </summary>
+        public bool ValidarBusqueda(string clave)
+        {
+            if (!ValidarNoVacio(clave, "Clave")) return false;
+            if (!ValidarNumerico(clave, "Clave")) return false;
+            return true;
         }
     }
 }
